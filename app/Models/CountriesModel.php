@@ -18,6 +18,4 @@ class CountriesModel extends Model
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-
- 
 }

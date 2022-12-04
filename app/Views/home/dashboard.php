@@ -25,76 +25,96 @@
         <div class="row mb-2">
 
           <div class="col-xl-3 col-sm-6 py-2">
-            <a href="<?= base_url(route_to("books")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume  shadow-lg position-relative" style="background-color: <?= config("G3stor")->secondColor ?>;">
-              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->mainColor ?>">
+            <a href="<?= base_url(route_to("books")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume  shadow-lg position-relative" style=" background-color: <?= config("G3stor")->mainColor ?>;">
+              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->secondColor ?>">
                 <img width="150px" height="150px" class="book-img position-absolute" src="<?= base_url("books-img.png") ?>" alt="">
                 <div class="book-type " style="z-index: 30;">
                   <i class="fa-solid fa-book-open fa-3x"></i>
                   <h6 class="text-uppercase ">Libros</h6>
                 </div>
-                <h1 class="fs-2 fw-normal me-3 position-absolute bottom-0 end-0">
+                <h1 class="book-item-number fs-2 fw-normal me-3 position-absolute bottom-0 end-0">
                   <?= $countBooks ?>
                 </h1>
+              </div>
+              <div class="dashboard-item-footer">
+                Más info
+                <i class="fa-solid fa-hand-pointer fs-6"></i>
               </div>
             </a>
           </div>
 
           <div class="col-xl-3 col-sm-6 py-2">
-            <a href="<?= base_url(route_to("editorials")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" " style=" background-color: <?= config("G3stor")->secondColor ?>;">
-              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->mainColor ?>">
-                <img width="150px" height="150px" class="book-img position-absolute"src="<?= base_url("books-img.png") ?>" alt="">
+            <a href="<?= base_url(route_to("editorials")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" style=" background-color: <?= config("G3stor")->mainColor ?>;">
+              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->secondColor ?>">
+                <img width="150px" height="150px" class="book-img position-absolute" src="<?= base_url("books-img.png") ?>" alt="">
                 <div class="book-type " style="z-index: 30;">
                   <i class="fa-solid fa-building-columns fa-3x"></i>
                   <h6 class="text-uppercase ">Editoriales</h6>
                 </div>
-                <h1 class="fs-2 fw-normal me-3 position-absolute bottom-0 end-0"><?= $countEditorials ?></h1>
+                <h1 class="book-item-number fs-2 fw-normal me-3 position-absolute bottom-0 end-0"><?= $countEditorials ?></h1>
+              </div>
+              <div class="dashboard-item-footer">
+                Más info
+                <i class="fa-solid fa-hand-pointer fs-6"></i>
               </div>
             </a>
           </div>
 
           <div class="col-xl-3 col-sm-6 py-2">
-            <a href="<?= base_url(route_to("autors")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" " style=" background-color: <?= config("G3stor")->secondColor ?>;">
-              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->mainColor ?>">
+            <a href="<?= base_url(route_to("autors")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" style=" background-color: <?= config("G3stor")->mainColor ?>;">
+              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->secondColor ?>">
                 <img width="150px" height="150px" class="book-img position-absolute" src="<?= base_url("books-img.png") ?>" alt="">
                 <div class="book-type " style="z-index: 30;">
                   <i class="fa-solid fa-user-tie fa-3x"></i>
                   <h6 class="text-uppercase ">Autores</h6>
                 </div>
-                <h1 class="fs-2 fw-normal me-3 position-absolute bottom-0 end-0"><?= $countAutors ?></h1>
+                <h1 class="book-item-number fs-2 fw-normal me-3 position-absolute bottom-0 end-0"><?= $countAutors ?></h1>
+              </div>
+              <div class="dashboard-item-footer">
+                Más info
+                <i class="fa-solid fa-hand-pointer fs-6"></i>
               </div>
             </a>
           </div>
 
           <div class="col-xl-3 col-sm-6 py-2">
-            <a href="<?= base_url(route_to("book")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" " style=" background-color: <?= config("G3stor")->secondColor ?>;">
-              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->mainColor ?>">
+            <a href="<?= base_url(route_to("students")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" style=" background-color: <?= config("G3stor")->mainColor ?>;">
+              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->secondColor ?>">
                 <img width="150px" height="150px" class="book-img position-absolute" src="<?= base_url("books-img.png") ?>" alt="">
                 <div class="book-type " style="z-index: 30;">
                   <i class="fa-solid fa-users-line fa-3x"></i>
                   <h6 class="text-uppercase ">Estudiantes</h6>
                 </div>
-                <h1 class="fs-2 fw-normal me-3 position-absolute bottom-0 end-0">503</h1>
+                <h1 class="book-item-number fs-2 fw-normal me-3 position-absolute bottom-0 end-0"><?= $countStudents ?></h1>
+              </div>
+              <div class="dashboard-item-footer">
+                Más info
+                <i class="fa-solid fa-hand-pointer fs-6"></i>
               </div>
             </a>
           </div>
 
           <div class="col-xl-3 col-sm-6 py-2">
-            <a href="<?= base_url(route_to("book")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" " style=" background-color: <?= config("G3stor")->secondColor ?>;">
-              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->mainColor ?>">
+            <a href="<?= base_url(route_to("book")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" style=" background-color: <?= config("G3stor")->mainColor ?>;">
+              <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->secondColor ?>">
                 <img width="150px" height="150px" class="book-img position-absolute" src="<?= base_url("books-img.png") ?>" alt="">
                 <div class="book-type " style="z-index: 30;">
                   <i class="fa-solid fa-ban fa-3x"></i>
                   <h6 class="text-uppercase ">Sanciones</h6>
                 </div>
-                <h1 class="fs-2 fw-normal me-3 position-absolute bottom-0 end-0">20</h1>
+                <h1 class="book-item-number fs-2 fw-normal me-3 position-absolute bottom-0 end-0">20</h1>
+              </div>
+              <div class="dashboard-item-footer">
+                Más info
+                <i class="fa-solid fa-hand-pointer fs-6"></i>
               </div>
             </a>
           </div>
 
 
-
+          <!-- 
           <div class="col-xl-3 col-sm-6 py-2">
-            <a href="<?= base_url(route_to("categories")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" " style=" background-color: <?= config("G3stor")->secondColor ?>;">
+            <a href="<?= base_url(route_to("")) ?>" class="card text-white h-100 ps-2 pb-2  content-resume shadow-lg position-relative" " style=" background-color: <?= config("G3stor")->secondColor ?>;">
               <div class="card-body content-body position-relative d-flex justify-content-between align-items-center ps-5" style="background-color: <?= config("G3stor")->mainColor ?>">
                 <img width="150px" height="150px" class="book-img position-absolute" src="<?= base_url("books-img.png") ?>" alt="">
                 <div class="book-type " style="z-index: 30;">
@@ -104,7 +124,7 @@
                 <h1 class="fs-2 fw-normal me-3 position-absolute bottom-0 end-0">15</h1>
               </div>
             </a>
-          </div>
+          </div> -->
 
 
 

@@ -42,20 +42,16 @@
                 <a class="dropdown-item nav-link ps-2 <?= preg_match("|^libros/autores(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("autors")) ?>">Autores</a>
               </li>
 
-              <li>
-                <a class="dropdown-item nav-link ps-2 <?= preg_match("|^libros/categorias(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("editorials")) ?>">Categorias</a>
-              </li>
-
             </ul>
           </div>
         </li>
 
 
         <li class="nav-item">
-          <a class="nav-link <?= preg_match("|^estudiantes(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("student")) ?>">Estudiantes</a>
+          <a class="nav-link <?= preg_match("|^estudiantes(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("students")) ?>">Estudiantes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?= preg_match("|^sanciones(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("book")) ?>">Sanciones</a>
+          <a class="nav-link <?= preg_match("|^sanciones(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("")) ?>">Sanciones</a>
         </li>
 
 

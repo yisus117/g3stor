@@ -11,7 +11,7 @@ Agregar una editorial
 <nav class="mt-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item  text-info"><a href="<?= base_url(route_to("home")) ?>">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="<?= base_url(route_to("book")) ?>">Libros</a></li>
+    <li class="breadcrumb-item"><a href="<?= base_url(route_to("books")) ?>">Libros</a></li>
     <li class="breadcrumb-item"><a href="<?= base_url(route_to("editorials")) ?>">Editoriales</a></li>
     <li class="breadcrumb-item active" aria-current="page">Agregar</li>
   </ol>

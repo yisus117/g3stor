@@ -39,8 +39,9 @@ class Books extends BaseController
   {
     $model = model("EditorialsModel");
 
+
     return view('book/create', [
-      "editorials" => $model->where("estado",1)->findAll()
+      "editorials" => $model->getEditorials(1)->get()->getResult()
     ]);
   }
 
@@ -160,4 +161,5 @@ class Books extends BaseController
       "body" => "La editorial fue eliminada"
     ]);
   }
+
 }

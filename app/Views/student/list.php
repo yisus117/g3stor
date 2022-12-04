@@ -1,7 +1,7 @@
 <?= $this->extend('front/layout/main') ?>
 
 <?= $this->section('title') ?>
-Libros
+student
 <?= $this->endSection() ?>
 
 
@@ -11,7 +11,7 @@ Libros
 <nav class="mt-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item  text-info"><a href="<?= base_url(route_to("home")) ?>">Inicio</a></li>
-    <li class="breadcrumb-item active">Libros</li>
+    <li class="breadcrumb-item active">Estudiantes</li>
   </ol>
 </nav>
 <?= $this->endSection() ?>
@@ -24,16 +24,13 @@ Libros
       <div class="table-wrapper m-1 card" style="border: 3px solid <?= config("G3stor")->mainColor ?>">
 
         <div class="table-title" style="outline: 3px solid <?= config("G3stor")->mainColor ?> ;background-color: <?= config("G3stor")->mainColor ?>">
-          <div class="row d-flex flex-row gap-2 gap-md-0 position-relative">
+          <div class="row d-flex flex-row gap-4 gap-md-0 position-relative">
             <div class="col-sm-12 col-md-3 d-flex align-items-center">
-              <a style="" href="<?= base_url(route_to("books")) ?>" class="title-hover d-inline h3 text-sm-center text-md-start text-white">
-               <i class="fa-solid fa-arrows-rotate fs-5 text-secondary"></i>
-                Libros
-            </a>
+              <a href="<?= base_url(route_to("students")) ?>" class="d-inline h3 text-sm-center text-md-start text-white">Estudiantes</a>
             </div>
             <div class="col-sm-12 col-md-6 p-2 rounded" style="background: <?= config("G3stor")->secondColor ?>">
               <form action="" method="GET" class="search">
-                <input name="q" value="<?= $query ?? '' ?>" type="text" class="form-control" placeholder="Buscar un libro">
+                <input name="q" value="<?= $query ?? '' ?>" type="text" class="form-control" placeholder="Buscar estudiante">
                 <div class="d-flex justify-content-center align-items-center">
 
                   <div class="active-group d-flex flex-column ms-2 ">
@@ -59,16 +56,16 @@ Libros
                   Activos
                 </span>
               <?php else : ?>
-                <span class="card d-inline bg-danger px-2 py-0 fw-normal">
+                <span class="card d-inline bg-warning px-2 py-0 fw-normal">
                   Inactivos
                 </span>
               <?php endif ?>
               <span class="ms-3">
-                <?= $query ? $countBooks . " Coincidencias" : "" ?>
+                <?= $query ? $countStudents . " Coincidencias" : "" ?>
               </span>
             </div>
             <div class="col-sm-12 col-md-3 position-absolute top-0 end-0 ">
-              <a href="<?= base_url(route_to("book_create")) ?>" class="btn btn-secondary p-2 px-3 mt-1 d-flex align-items-center gap-2 " style="color: white; background-color: <?= config("G3stor")->secondColor ?>">
+              <a href="<?= base_url(route_to("student_create")) ?>" class="btn btn-secondary p-2 px-3 mt-1 d-flex align-items-center gap-2 " style="color: white; background-color: <?= config("G3stor")->secondColor ?>">
                 <i class="fa-solid fa-plus"></i>
                 <span class="fs-6">Agregar</span>
               </a>
@@ -76,12 +73,12 @@ Libros
           </div>
         </div>
 
-        <?php if (!$books && !$query) : ?>
+        <?php if (!$students && !$query) : ?>
           <p class="mt-3 display-2 text-center" style="color: <?= config("G3stor")->mainColor ?>;">
             <i class="fa-regular fa-face-frown-open"></i>
           </p>
           <h3 class="mb-5 text-center" style="color: <?= config("G3stor")->mainColor ?>;">Sin registros</h3>
-        <?php elseif (!$query == "" && $countBooks == 0) : ?>
+        <?php elseif (!$query == "" && $countStudents == 0) : ?>
           <p class="mt-3 display-2 text-center" style="color: <?= config("G3stor")->mainColor ?>;">
             <i class="fa-regular fa-face-frown-open"></i>
           </p>
@@ -91,30 +88,40 @@ Libros
           <table class="table table-striped table-hover">
             <thead>
               <tr>
-                <th>Nombre</th>
-                <th>editorial</th>
-                <th>edicion</th>
-                <th># paginas</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Documento</th>
+                <th>Direccion</th>
+                <th>E. Civil</th>
+                <th>Sexo</th>
+                <th>Correo</th>
+                <th>Programa</th>
                 <th>Estado</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
 
-              <?php foreach ($books as $book) : ?>
+              <?php foreach ($students as $student) : ?>
                 <tr>
-                  <td><?= $book->nombre ?></td>
-                  <td><?= $book->editorial ?></td>
-                  <td><?= $book->edicion ?></td>
-                  <td><?= $book->paginas ?></td>
+                  <td><?= $student->primer_nombre ?> <?= $student->segundo_nombre ?></td>
+                  <td><?= $student->primer_apellido ?> <?= $student->segundo_apellido ?></td>
+                  <td><span class="more_info" title="<?= $student->tipo_documento ?>"><?= $student->tipo_documento_abv ?></span> <?= $student->documento ?></td>
+                  <td><?= $student->direccion ?></td>
+                  <td><span class="more_info" title="<?= $student->estado_civil ?>"><?= $student->estado_civil_abv ?></span></td>
+                  <td><span class="more_info" title="<?= $student->sexo ?>"><?= $student->sexo_abv ?></td>
+                  <td><?= $student->correo ?></td>
+                  <td><?= $student->programa ?></td>
                   <td>
-                    <?= $book->activo === "1" ? "Activo" : "inactivo" ?>
+                    <span class=" px-2 py-1 fw-bold  <?= $student->activo == "1" ? "bg-success text-white text-nowrap" : ($student->activo === "2" ? "bg-warning text-dark text-nowrap" : "bg-danger") ?>">
+                      <?= $student->activo == "1" ? "Activo" : ($student->activo === "2" ? "Inactivo" : "eliminado") ?>
+                    </span>
                   </td>
                   <td class="d-flex f-row gap-2 mx-0">
-                    <a href="<?= $book->getEditLine($book->id_libros) ?>" class="btn btn-secondary text-white px-2 py-1 h-4 d-flex justify-content-center align-items-center">
+                    <a href="<?= $student->getEditLine($student->id_student) ?>" class="btn btn-secondary text-white px-2 py-1 h-4 d-flex justify-content-center align-items-center">
                       <i class="fa-solid fa-edit fs-6"></i>
                     </a>
-                    <a href="<?= $book->getDeleteLine($book->id_libros) ?>" class="btn btn-danger text-white px-2 py-1">
+                    <a href="<?= $student->getDeleteLine($student->id_student) ?>" class="btn btn-danger text-white px-2 py-1">
                       <i class="fa-solid fa-trash fs-6"></i>
                     </a>
                   </td>
@@ -128,12 +135,13 @@ Libros
           <div class="table-footer px-2">
             <?= $pager->links() ?>
             <div class="hint-cant text-secondary">
-              <?php if ($countBooks == 0) : ?>
+              <?php if ($countStudents == 0) : ?>
                 Sin registros
-              <?php elseif ($countBooks == 1) : ?>
-                <?= $countBooks ?> registro
+              <?php elseif ($countStudents == 1) : ?>
+                <?= $countStudents ?> registro
               <?php else : ?>
-                <?= $countBooks ?> registros
+                <?= $countStudents ?> registros
+
               <?php endif ?>
             </div>
           </div>

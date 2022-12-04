@@ -7,7 +7,6 @@ use CodeIgniter\Entity;
 
 class Editorial extends Entity
 {
-
   public function getEditLine($id)
   {
     return base_url(route_to("editorial_edit", $id));

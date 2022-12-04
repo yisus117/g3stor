@@ -86,14 +86,14 @@ $routes->group("libros", ["namespace" => "App\Controllers\Book"], function ($rou
 
     // ----- Categories -----
 
-    $routes->get("categorias", "Categories::index", ["as" => "categories"]);
-    $routes->get("categorias/crear", "Categories::create", ["as" => "categories_create"]);
-    $routes->post("categorias/guardar", "Categories::store", ["as" => "categories_store"]);
+    // $routes->get("categorias", "Categories::index", ["as" => "categories"]);
+    // $routes->get("categorias/crear", "Categories::create", ["as" => "categories_create"]);
+    // $routes->post("categorias/guardar", "Categories::store", ["as" => "categories_store"]);
 
-    $routes->get("categorias/editar/(:any)", "Categories::edit/$1", ["as" => "categories_edit"]);
-    $routes->post("categorias/actualizar", "Categories::update", ["as" => "categories_update"]);
+    // $routes->get("categorias/editar/(:any)", "Categories::edit/$1", ["as" => "categories_edit"]);
+    // $routes->post("categorias/actualizar", "Categories::update", ["as" => "categories_update"]);
 
-    $routes->get("categorias/eliminar/(:any)", "Categories::delete/$1", ["as" => "categories_delete"]);
+    // $routes->get("categorias/eliminar/(:any)", "Categories::delete/$1", ["as" => "categories_delete"]);
 });
 
 $routes->group("auth", ["namespace" => "App\Controllers\Auth"], function ($routes) {
@@ -104,6 +104,14 @@ $routes->group("auth", ["namespace" => "App\Controllers\Auth"], function ($route
     $routes->get("logout", "Login::signout", ["as" => "signout"]);
 });
 
+
+$routes->group("estudiantes", ["namespace" => "App\Controllers"], function ($routes) {
+    // $routes->get("registro", "Register::index", ["as" => "register"]);
+    // $routes->post("store", "Register::store");
+    $routes->get("", "Students::index", ["as" => "students"]);
+    $routes->get("crear", "Students::create", ["as" => "student_create"]);
+    $routes->post("guardar", "Students::store", ["as" => "student_store"]);
+});
 /*
  * --------------------------------------------------------------------
  * Additional Routing

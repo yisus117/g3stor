@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-3">
           <h6 class="text-uppercase font-weight-bold">
-            <a href="<?= base_url(route_to("books")) ?>" class="text-white">Estudiantes</a>
+            <a href="<?= base_url(route_to("students")) ?>" class="text-white">Estudiantes</a>
           </h6>
         </div>
         <div class="col-md-3">

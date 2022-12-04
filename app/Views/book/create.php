@@ -11,7 +11,7 @@ Agregar un libro
 <nav class="mt-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item  text-info"><a href="<?= base_url(route_to("home")) ?>">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="<?= base_url(route_to("book")) ?>">Libros</a></li>
+    <li class="breadcrumb-item"><a href="<?= base_url(route_to("books")) ?>">Libros</a></li>
     <li class="breadcrumb-item active" aria-current="page">Agregar</li>
   </ol>
 </nav>
@@ -32,13 +32,13 @@ Agregar un libro
 
                 <div class="col-md-12 mb-4">
                   <label class="label fs-6">Nombre:</label>
-                  <input class="form-control mt-1 " type="text" name="name" placeholder="Ingrese el nombre" required>
+                  <input class="form-control mt-1 " type="text" name="name" placeholder="Ingrese el nombre" required  style="background-color: <?= config("G3stor")->secondColor ?>;">
                   <div class="invalid-feedback">El campo de nombre no puede estar en blanco</div>
                 </div>
 
                 <div class="col-md-12  mb-4 mt-3">
                   <label class="label fs-6">Editorial:</label>
-                  <select name="id_editorial" class="form-select mt-1" required>
+                  <select name="id_editorial" class="form-select mt-1" required  style="background-color: <?= config("G3stor")->secondColor ?>;">
                     <option selected disabled value="">Selecciona una editorial</option>
                     <?php foreach ($editorials as $editorial) : ?>
                       <option value="<?= old("id_editorial") ?? $editorial->id_pais ?>" <?php if ($editorial->id_editorial == old("id_editorial")) : ?> selected <?php endif ?>><?= $editorial->nombre ?></option>
@@ -50,20 +50,20 @@ Agregar un libro
 
                 <div class="col-md-12 mb-4">
                   <label class="label fs-6">Edicion:</label>
-                  <input class="form-control mt-1 " type="text" name="edition" placeholder="Ingrese la edicion" required>
+                  <input class="form-control mt-1 " type="text" name="edition" placeholder="Ingrese la edicion" required  style="background-color: <?= config("G3stor")->secondColor ?>;">
                   <div class="invalid-feedback">El campo de edicion no puede estar en blanco</div>
                 </div>
 
                 <div class="col-md-12 mb-4">
                   <label class="label fs-6">N° de Paginas:</label>
-                  <input class="form-control mt-1 " type="text" name="pages" placeholder="Ingrese el numero de paginas" required>
+                  <input class="form-control mt-1 " type="text" name="pages" placeholder="Ingrese el numero de paginas" required  style="background-color: <?= config("G3stor")->secondColor ?>;">
                   <div class="invalid-feedback">El campo de num paginas no puede estar en blanco</div>
                 </div>
 
 
                 <div class="col-md-12 mb-4 d-none">
                   <label class="label fs-6">Estado:</label>
-                  <select class="form-select mt-1" required>
+                  <select class="form-select mt-1" required  style="background-color: <?= config("G3stor")->secondColor ?>;">
                     <?php if (service("request")->uri->getPath() == "libros/agregar") : ?>
                       <option value="1">Activo</option>
                     <?php else : ?>

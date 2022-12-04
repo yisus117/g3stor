@@ -16,6 +16,8 @@ class Editorials extends BaseController
       $state = 2;
     }
 
+
+
     if ($this->request->getGet("q")) {
       $q = trim($this->request->getGet("q"));
       $editorial = $model->getEditorialByName($q, $state)->paginate(config("G3stor")->regPerPage);

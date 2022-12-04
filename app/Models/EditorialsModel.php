@@ -75,7 +75,7 @@ class EditorialsModel extends Model
   public function getEditorials($state)
   {
     return $this
-      ->select("id_editorial, editoriales.nombre, p.nombre AS pais, editoriales.estado")
+      ->select("id_editorial,editoriales.id_pais, editoriales.nombre, p.nombre AS pais, editoriales.estado")
       ->join("paises as p", "p.id_pais = editoriales.id_pais")
       ->where("editoriales.estado", $state)
       ->orderBy("editoriales.nombre");

@@ -7,7 +7,6 @@ use CodeIgniter\Entity;
 
 class Autor extends Entity
 {
-
   public function getEditLine($id)
   {
     return base_url(route_to("autors_edit", $id));
