@@ -34,6 +34,10 @@ a {
   cursor: help;
 }
 
+.no_wrap {
+  white-space: nowrap;
+}
+
 .btn:hover,
 .dropdown-item:hover {
   filter: brightness(90%) !important;
@@ -186,24 +190,24 @@ body {
   padding: 20px 25px;
   margin: 30px 0;
   border-radius: 0px;
+  overflow-x: auto;
 }
 .table-title {
   padding-bottom: 15px;
-  background: #435d7d;
   color: #fff;
   padding: 10px 30px;
   margin: -20px -25px 10px;
-  border-radius: 3px 3px 0 0;
 }
 
 .title-hover {
   padding: 0.5rem;
   border-radius: 2px;
   text-align: center;
+  margin-left: -0.5rem;
 }
 
 .title-hover i {
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .title-hover:hover {
@@ -241,6 +245,10 @@ table.table tr td {
   border-color: #e9e9e9;
   padding: 12px 15px;
   vertical-align: middle;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 table.table-striped tbody tr:nth-of-type(odd) {
@@ -253,6 +261,7 @@ table.table th i {
   font-size: 13px;
   margin: 0 5px;
   cursor: pointer;
+  
 }
 table.table td:last-child i {
   opacity: 0.9;
@@ -379,19 +388,17 @@ table.table .avatar {
 .custom-checkbox input[type="checkbox"]:checked + label:after {
   border-color: #fff;
 }
-.custom-checkbox input[type="checkbox"]:disabled + label:before {
-  color: #b8b8b8;
+.custom-checkbox input[type="checkbox"]:disabled + label:before,
+input[type="text"]:read-only  {
+  color: rgb(141, 141, 141) !important;
   cursor: auto;
   box-shadow: none;
-  background: #ddd;
+  background: rgb(90, 90, 90) !important;
+  cursor: not-allowed;
 }
 
 .search {
-  display: flex;
-  box-shadow: 0 0 40px rgba(51, 51, 51, 0.1);
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  margin-top: -8px;
 }
 
 .search input {
@@ -509,11 +516,10 @@ table.table .avatar {
   font-size: 0.9rem;
 }
 
-.form-group input[type="text"]:required ~ .label::after,
-.form-group select:required ~ label::after {
-  content: "*" !important;
+ .form-content .req:after {
+  content: " *" !important;
   margin-left: 3px;
-  color: red;
+  color: red !important;
   font-weight: bold;
 }
 

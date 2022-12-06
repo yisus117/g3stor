@@ -50,11 +50,11 @@ class Editorials extends BaseController
   {
 
     if (!$this->validate([
-      "name" => "required|max_length[200]",
+      "name" => "required|max_length[100]",
       "id_country" => "required|is_not_unique[paises.id_pais]",
     ])) {
       return redirect()->back()->withInput()->with("msg", [
-        "type" => "is-danger",
+        "type" => "warning",
         "body" => "Tienes campos incorrectos"
       ])->with("errors", $this->validator->getErrors());
     }

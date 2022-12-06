@@ -98,6 +98,21 @@ class StudentsModel extends Model
       ->orderBy("estudiantes.primer_nombre");
   }
 
+  public function insertStudent( $pn, $sn, $pa, $sa, $td, $doc, $sx, $ec, $dir, $cor, $pro, $tel)
+  {
+    $q = "CALL insertar_estudiante('$pn', '$sn','$pa', '$sa', $td, '$doc', $sx, $ec, '$dir', '$cor', '$pro', '$tel')";
+    $query = $this->query($q);
+    return $query;
+  }
+
+  public function updateStudent( $id, $pn, $sn, $pa, $sa, $td, $doc, $sx, $ec, $dir, $cor, $pro, $tel, $act)
+  {
+    $q = "CALL actualizar_estudiante($id, '$pn', '$sn','$pa', '$sa', $td, '$doc', $sx, $ec, '$dir', '$cor', '$pro', '$tel','$act')";
+    $query = $this->query($q);
+    return $query;
+  }
+
+
   public function deleteStudent($id)
   {
     return $this->update($id, ["estado" => 0]);
@@ -109,4 +124,13 @@ class StudentsModel extends Model
     $res = $this->query($sql, $state)->getRow();
     return get_object_vars($res);
   }
+
+  public function getFields()
+  {
+    $q = "CALL obtener_nombre_campos('estudiantes')";
+    $query = $this->query($q);
+    return $query;
+  }
+
+  
 }

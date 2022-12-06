@@ -33,15 +33,15 @@ Agregar una editorial
 
                 <div class="col-md-12 mb-4">
                   <label class="label fs-6">Nombre:</label>
-                  <input class="form-control mt-1 " type="text" name="name" placeholder="Ingrese el nombre" required>
+                  <input class="form-control mt-1 " type="text" name="name" placeholder="Ingrese el nombre" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                   <div class="valid-feedback">valido</div>
                   <div class="invalid-feedback">El campo de nombre no puede estar en blanco</div>
                 </div>
 
                 <div class="col-md-12  mb-4 mt-3">
                   <label class="label fs-6">Pais:</label>
-                  <select name="id_country" class="form-select mt-1" required>
-                    <option selected disabled value="">Selecciona un pais</option>
+                  <select name="id_country" class="form-select mt-1" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <option selected disabled hidden value="">Selecciona un pais</option>
                     <?php foreach ($countries as $country) : ?>
                       <option value="<?= old("id_country") ?? $country->id_pais ?>" <?php if ($country->id_pais == old("id_country")) : ?> selected <?php endif ?>><?= $country->nombre ?></option>
                     <?php endforeach; ?>

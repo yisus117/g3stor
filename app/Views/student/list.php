@@ -16,41 +16,82 @@ student
 </nav>
 <?= $this->endSection() ?>
 
-<section class="section min-vh-100">
+<section class="section min-vh-100 mt-3">
   <div class="container-fluid">
     <div class="container-fluid ">
 
       <!-- table -->
       <div class="table-wrapper m-1 card" style="border: 3px solid <?= config("G3stor")->mainColor ?>">
 
-        <div class="table-title" style="outline: 3px solid <?= config("G3stor")->mainColor ?> ;background-color: <?= config("G3stor")->mainColor ?>">
-          <div class="row d-flex flex-row gap-4 gap-md-0 position-relative">
-            <div class="col-sm-12 col-md-3 d-flex align-items-center">
-              <a href="<?= base_url(route_to("students")) ?>" class="d-inline h3 text-sm-center text-md-start text-white">Estudiantes</a>
-            </div>
-            <div class="col-sm-12 col-md-6 p-2 rounded" style="background: <?= config("G3stor")->secondColor ?>">
-              <form action="" method="GET" class="search">
-                <input name="q" value="<?= $query ?? '' ?>" type="text" class="form-control" placeholder="Buscar estudiante">
-                <div class="d-flex justify-content-center align-items-center">
+        <div class="table-title gap-4" style="outline: 3px solid <?= config("G3stor")->mainColor ?> ;background-color: <?= config("G3stor")->secondColor ?>">
 
-                  <div class="active-group d-flex flex-column ms-2 ">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" value="1" name="active" id="active" <?= service("request")->uri->getQuery(['only' => ['active']]) !== "active=2" ? "checked" : ""  ?> />
-                      <label class="form-check-label" for="active">Activos</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" value="2" name="active" id="inactive" <?= service("request")->uri->getQuery(['only' => ['active']]) == "active=2" ? "checked" : ""  ?> />
-                      <label class="form-check-label" for="inactive">Inactivos</label>
+
+          <div class="row">
+            <div class="col-6  d-flex align-items-center justify-content-between">
+            <a href="<?= base_url(route_to("students")) ?>" class="title-hover no_wrap d-inline h3 text-sm-center text-md-start text-white">
+              Estudiantes
+              <i class="fa-solid fa-arrows-rotate fs-5 text-secondary"></i>
+            </a>
+            </div>
+
+            <div class="col-6  ">
+              <a href="<?= base_url(route_to("students_create")) ?>" class="btn btn-secondary p-2 px-3 mt-1 d-flex align-items-center gap-2 " style="color: white; background-color: <?= config("G3stor")->mainColor ?>">
+                <i class="fa-solid fa-plus"></i>
+                <span class="fs-6">Agregar</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="row justify-content-center align-items-center g-2 rounded mt-1" style="background: <?= config("G3stor")->mainColor ?>">
+
+            <div class="col-lg-10 p-1 mx-auto">
+              <form method="GET">
+                <div class="search row d-flex justify-content-center align-items-center">
+                  <div class="col-6 col-md-3 col-lg-4">
+                    <select name="field" class="form-select border-0 fw-semibold " required style="background-color: <?= config("G3stor")->grayColor ?>; color: <?= config("G3stor")->textColor ?>;">
+                      <option selected hidden value="primer_nombre">Primer nombre</option>
+                      <?php foreach ($fields  as $field) : ?>
+                        <option <?= service("request")->uri->getQuery(['only' => ['field']]) == "field=" . $field ? "selected" : ""  ?> value="<?= $field ?>"><?= ucfirst(str_replace("_", " ", $field)) ?></option>
+                      <?php endforeach; ?>
+
+                    </select>
+                  </div>
+
+                  <div class="col-2 col-md-2">
+                    <div class=" d-flex flex-column justify-content-center align-items-center">
+                      <div class="d-flex">
+                        <div class="active-group d-flex flex-column ms-2 ">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" value="1" name="active" id="active" <?= service("request")->uri->getQuery(['only' => ['active']]) !== "active=2" ? "checked" : ""  ?> />
+                            <label class="form-check-label" for="active">Activos</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" value="2" name="active" id="inactive" <?= service("request")->uri->getQuery(['only' => ['active']]) == "active=2" ? "checked" : ""  ?> />
+                            <label class="form-check-label" for="inactive">Inactivos</label>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <button class="btn d-flex align-items-center justify-content-center" style="background: <?= config("G3stor")->mainColor ?>">
-                    <i class="fa-solid fa-magnifying-glass fs-6"></i>
 
-                  </button>
+                  <div class="col-8 col-md-6">
+                    <div class="d-flex">
+                      <input name="q" value="<?= $query ?? '' ?>" type="text" class="form-control fw-semibold" placeholder="Buscar estudiante" style="background-color: <?= config("G3stor")->grayColor ?>; color: <?= config("G3stor")->textColor ?>;">
+                      <button class="btn d-flex align-items-center justify-content-center" style="background: <?= config("G3stor")->secondColor ?>">
+                        <i class="fa-solid fa-magnifying-glass fs-6"></i>
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               </form>
+            </div>
 
-              <span class=" pt-4"><strong class="me-1"> Buscar: </strong><?= !$query ? 'Todos,' : '"' . $query . '",' ?> <strong class="ms-2 me-1"> En:</strong> </span>
+          </div>
+
+          <div class="row mt-1">
+            <div class="d-flex justify-content-start">
+              <span class=""><strong class="me-1"> Buscar: </strong><?= !$query ? 'Todos,' : '"' . $query . '",' ?> <strong class="ms-2 me-1"> En:</strong> </span>
               <?php if (service("request")->uri->getQuery(['only' => ['active']]) !== "active=2") : ?>
                 <span class="card d-inline bg-success px-2 py-0 fw-normal">
                   Activos
@@ -64,13 +105,8 @@ student
                 <?= $query ? $countStudents . " Coincidencias" : "" ?>
               </span>
             </div>
-            <div class="col-sm-12 col-md-3 position-absolute top-0 end-0 ">
-              <a href="<?= base_url(route_to("student_create")) ?>" class="btn btn-secondary p-2 px-3 mt-1 d-flex align-items-center gap-2 " style="color: white; background-color: <?= config("G3stor")->secondColor ?>">
-                <i class="fa-solid fa-plus"></i>
-                <span class="fs-6">Agregar</span>
-              </a>
-            </div>
           </div>
+
         </div>
 
         <?php if (!$students && !$query) : ?>
@@ -82,7 +118,7 @@ student
           <p class="mt-3 display-2 text-center" style="color: <?= config("G3stor")->mainColor ?>;">
             <i class="fa-regular fa-face-frown-open"></i>
           </p>
-          <h3 class="mb-5 text-center" style="color: <?= config("G3stor")->mainColor ?>;">Sin registros para: "<?= $query ?>"</h3>
+          <h3 class="mb-5 text-center" style="color: <?= config("G3stor")->mainColor ?>;">Sin registros para: "<?= $query ?>" <br/> en el campo: "<?=  str_replace("field=", "",(str_replace("_", " ", service("request")->uri->getQuery(['only' => ['field']])))) ?>"</h3>
 
         <?php else : ?>
           <table class="table table-striped table-hover">
@@ -118,10 +154,10 @@ student
                     </span>
                   </td>
                   <td class="d-flex f-row gap-2 mx-0">
-                    <a href="<?= $student->getEditLine($student->id_student) ?>" class="btn btn-secondary text-white px-2 py-1 h-4 d-flex justify-content-center align-items-center">
+                    <a href="<?= $student->getEditLine($student->id_estudiante) ?>" class="btn btn-secondary text-white px-2 py-1 h-4 d-flex justify-content-center align-items-center">
                       <i class="fa-solid fa-edit fs-6"></i>
                     </a>
-                    <a href="<?= $student->getDeleteLine($student->id_student) ?>" class="btn btn-danger text-white px-2 py-1">
+                    <a href="<?= $student->getDeleteLine($student->id_estudiante) ?>" class="btn btn-danger text-white px-2 py-1">
                       <i class="fa-solid fa-trash fs-6"></i>
                     </a>
                   </td>

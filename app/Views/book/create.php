@@ -31,8 +31,10 @@ Agregar un libro
               <form class="requires-validation" novalidate action="<?= base_url(route_to("book_store")) ?>" method="POST">
 
                 <div class="col-md-12 mb-4">
+          
                   <label class="label fs-6">Nombre:</label>
                   <input class="form-control mt-1 " type="text" name="name" placeholder="Ingrese el nombre" required  style="background-color: <?= config("G3stor")->secondColor ?>;">
+    
                   <div class="invalid-feedback">El campo de nombre no puede estar en blanco</div>
                 </div>
 

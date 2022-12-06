@@ -109,8 +109,11 @@ $routes->group("estudiantes", ["namespace" => "App\Controllers"], function ($rou
     // $routes->get("registro", "Register::index", ["as" => "register"]);
     // $routes->post("store", "Register::store");
     $routes->get("", "Students::index", ["as" => "students"]);
-    $routes->get("crear", "Students::create", ["as" => "student_create"]);
-    $routes->post("guardar", "Students::store", ["as" => "student_store"]);
+    $routes->get("agregar", "Students::create", ["as" => "students_create"]);
+    $routes->post("agregar/guardar", "Students::store", ["as" => "students_store"]);
+
+    $routes->get("estudiantes/editar/(:any)", "Students::edit/$1", ["as" => "students_edit"]);
+    $routes->post("estudiantes/actualizar", "Students::update", ["as" => "students_update"]);
 });
 /*
  * --------------------------------------------------------------------
