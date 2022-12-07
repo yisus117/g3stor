@@ -13,27 +13,26 @@ class Students extends BaseController
     $model = model("VStudentsModel");
 
     $fields = $model->getFields();
-
-    array_pop($fields);
-
-
-
-    if ($this->request->getGet("active") != "2") {
+    $q = $this->request->getGet("q");
+  
+    if ( $this->request->getGet("activos") === "on") {
       $state = 1;
     } else {
       $state = 2;
     }
 
-    if ($this->request->getGet("q")) {
-      $q = trim($this->request->getGet("q"));
+   
+
+    
+    if ($q or $q === "") {
       $field = trim($this->request->getGet("field"));
       $students = $model->getStudentsByName($field, $q, $state)->paginate(config("G3stor")->regPerPage);
       $data["students"] = $students;
       $data["countStudents"] =  count($students);
       $data["query"] = $q;
     } else {
-      $data["students"] =  $model->getStudents($state)->paginate(config("G3stor")->regPerPage);
-      $data["countStudents"] = $model->countStudents($state)["contar_estudiantes_activos($state)"];
+      $data["students"] =  $model->getStudents(1)->paginate(config("G3stor")->regPerPage);
+      $data["countStudents"] = $model->countStudents(1)["contar_estudiantes_activos(1)"];
       $data["query"] = "";
     };
 

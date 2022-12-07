@@ -40,17 +40,23 @@ class VStudentsModel extends Model
     try {
       $q = "CALL obtener_nombre_campos('v_estudiantes')";
       $query = $this->query($q)->getResult();
+      array_shift($query);
     
     } catch (Exception $e) {
       echo $e;
     }
 
-    return array_filter(
+   $temp = array_filter(
       array_column($query, "COLUMN_NAME"),
       function ($a) {
-        return (!strpos($a, "abv"));
+        return (!strpos($a, "abv")) ;
       }
     );
+   
+
+    return $temp;
+
+
 
 
   }

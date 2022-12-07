@@ -25,7 +25,7 @@ class App extends BaseConfig
      * @var string
      */
     public $baseURL = 'http://g3stor.v';
-
+    //  public $baseURL =  'http://192.168.1.9/g3stor/public/' ;
     /**
      * --------------------------------------------------------------------------
      * Index File
