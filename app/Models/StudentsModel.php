@@ -45,28 +45,7 @@ class StudentsModel extends Model
 
   protected function afterUpdated($data)
   {
-    $model = model("auditoriaModel");
-    $old = $this->oldInfo;
-    if ($data["data"]["estado"] == 0) {
-      array_pop($old);
-      $datos = [
-        "tipo" => "DELETE",
-        "tabla" => "autores",
-        "id_user" => config("G3stor")->currentUserId,
-        "old_info" => implode("|", $this->oldInfo),
-        "new_info" => implode("|", $old)  . "|" . "0"
-      ];
-    } else {
-      $datos = [
-        "id_editorial" => null,
-        "tipo" => "UPDATE",
-        "tabla" => "editoriales",
-        "id_user" => config("G3stor")->currentUserId,
-        "old_info" => implode("|", $this->oldInfo),
-        "new_info" => strval($data["id"][0]) . "|" . implode("|", $data["data"])
-      ];
-    }
-    $model->insert($datos);
+  
   }
 
 
@@ -115,7 +94,8 @@ class StudentsModel extends Model
 
   public function deleteStudent($id)
   {
-    return $this->update($id, ["estado" => 0]);
+     $this->update($id, ["activo" => 0]);
+     return;
   }
 
   public function countStudents($state = 1)

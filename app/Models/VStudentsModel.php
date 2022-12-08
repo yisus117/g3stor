@@ -46,18 +46,13 @@ class VStudentsModel extends Model
       echo $e;
     }
 
-   $temp = array_filter(
+    return array_filter(
       array_column($query, "COLUMN_NAME"),
       function ($a) {
         return (!strpos($a, "abv")) ;
       }
     );
-   
-
-    return $temp;
-
-
-
+  
 
   }
   public function getStudentsByName($field,$search, $state)

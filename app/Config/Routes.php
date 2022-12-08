@@ -112,9 +112,13 @@ $routes->group("estudiantes", ["namespace" => "App\Controllers"], function ($rou
     $routes->get("agregar", "Students::create", ["as" => "students_create"]);
     $routes->post("agregar/guardar", "Students::store", ["as" => "students_store"]);
 
-    $routes->get("estudiantes/editar/(:any)", "Students::edit/$1", ["as" => "students_edit"]);
-    $routes->post("estudiantes/actualizar", "Students::update", ["as" => "students_update"]);
+    $routes->get("editar/(:any)", "Students::edit/$1", ["as" => "students_edit"]);
+    $routes->post("actualizar", "Students::update", ["as" => "students_update"]);
+
+    $routes->get("eliminar/(:num)", "Students::delete/$1", ["as" => "students_delete"]);
 });
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

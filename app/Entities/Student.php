@@ -13,7 +13,7 @@ class Student extends Entity
 
   public function getDeleteLine($id)
   {
-    return base_url(route_to("students_delete", $id));
+    return base_url(route_to("students_delete"));
   }
 
  

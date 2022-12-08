@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="<?= base_url("/css/all.min.css") ?>">
   <!-- <script src="https://kit.fontawesome.com/b19bd6df60.js" crossorigin="anonymous"></script> -->
 
+  <!-- SweetAlert 2  -->
+  <link rel="stylesheet" href="<?= base_url("/css/sweetalert2.min.css") ?>">
+  <!-- <script src="https://kit.fontawesome.com/b19bd6df60.js" crossorigin="anonymous"></script> -->
+
   <!-- Google font - Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +31,7 @@
 
   <!-- clock date -->
   <script src="<?= base_url("/js/date.js") ?>"></script>
-  
+
   <?= $this->renderSection("css") ?>
 
 
@@ -50,7 +54,7 @@
       </div>
     <?php endif ?>
 
-   
+
 
   </nav>
 
@@ -64,26 +68,63 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script> -->
 
   <script src="<?= base_url("/js/bootstrap.bundle.min.js") ?>"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+  <script src="<?= base_url("/js/jquery.min.js") ?>"></script>
+  <script src="<?= base_url("/js/sweetalert2.min.js") ?>"></script>
 
 
   <?= $this->renderSection("js") ?>
   <script>
-  (function() {
-    'use strict'
-    const forms = document.querySelectorAll('.requires-validation')
-    Array.from(forms)
-      .forEach(function(form) {
-        form.addEventListener('submit', function(event) {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
+    (function() {
+      'use strict'
+      const forms = document.querySelectorAll('.requires-validation')
+      Array.from(forms)
+        .forEach(function(form) {
+          form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
 
-          form.classList.add('was-validated')
-        }, false)
-      })
-  })()
-</script>
+            form.classList.add('was-validated')
+          }, false)
+        })
+    })()
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      <?php if (session()->getFlashdata("status_text")) { ?>
+        Swal.fire({
+            icon: '<?= session()->getFlashdata("status_icon") ?>',
+            title: '<?= session()->getFlashdata("status") ?>',
+            text: '<?= session()->getFlashdata("status_text") ?>'
+        })
+    
+        <?php } else if(session()->getFlashdata("status")) { ?>
+          const Toast = swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+  
+          Toast.fire({   
+            title: '<?= session()->getFlashdata("status") ?>',
+            icon: '<?= session()->getFlashdata("status_icon") ?>'
+          })
+
+
+      <?php }  ?>
+    })
+  </script>
+
+
 
 
 

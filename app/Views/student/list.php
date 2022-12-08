@@ -1,7 +1,7 @@
 <?= $this->extend('front/layout/main') ?>
 
 <?= $this->section('title') ?>
-student
+Estudiantes
 <?= $this->endSection() ?>
 
 
@@ -123,6 +123,7 @@ student
         <table class="table table-striped table-hover">
           <thead>
             <tr>
+              <th>id</th>
               <th>Nombres</th>
               <th>Apellidos</th>
               <th>Documento</th>
@@ -139,6 +140,7 @@ student
 
             <?php foreach ($students as $student) : ?>
               <tr>
+                <td><?= $student->id_estudiante ?></td>
                 <td><?= $student->primer_nombre ?> <?= $student->segundo_nombre ?></td>
                 <td><?= $student->primer_apellido ?> <?= $student->segundo_apellido ?></td>
                 <td><span class="more_info" title="<?= $student->tipo_documento ?>"><?= $student->tipo_documento_abv ?></span> <br> <?= $student->documento ?></td>
@@ -153,13 +155,13 @@ student
                   </span>
                 </td>
                 <td class="">
-                  <div class="d-flex f-row gap-2 mx-0">
-                  <a href="<?= $student->getEditLine($student->id_estudiante) ?>" class="btn btn-secondary text-white px-2 py-1 h-4 d-flex justify-content-center align-items-center">
-                    <i class="fa-solid fa-edit fs-6"></i>
-                  </a>
-                  <a href="<?= $student->getDeleteLine($student->id_estudiante) ?>" class="btn btn-danger text-white px-2 py-1">
-                    <i class="fa-solid fa-trash fs-6"></i>
-                  </a>
+                  <div class="d-flex f-row gap-2 mx-0 ">
+                    <a href="<?= $student->getEditLine($student->id_estudiante) ?>" class="btn btn-secondary text-white update px-2 py-1 h-4 d-flex justify-content-center align-items-center">
+                      <i class="fa-solid fa-edit fs-6"></i>
+                    </a>
+                    <button type="button" data-name="<?= $student->primer_nombre ?> <?= $student->primer_apellido ?>" class="btn btn-danger delete text-white px-2 py-1">
+                      <i class="fa-solid fa-trash fs-6"></i>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -188,6 +190,12 @@ student
 
 
 </section>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('js') ?>
+
+<script src="<?= base_url("/js/alert.js") ?>"></script>
 
 
 <?= $this->endSection() ?>

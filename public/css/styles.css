@@ -75,6 +75,10 @@ a {
   min-width: 120px;
 }
 
+.date {
+  text-transform: capitalize;
+}
+
 .content-resume {
   /* background-image: url("/wood.jpg") ; */
   border: 0;
