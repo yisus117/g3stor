@@ -34,7 +34,7 @@ Agregar un estudiante
                   <div class="col-md-6 mb-4">
                     <div class="form-group">
                       <label class="label req fs-6">Primer Nombre:</label>
-                      <input class="form-control mt-1 " type="text" name="first_name" value="<?= old("first_name")?>" placeholder="Ingrese el nombre" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                      <input class="form-control mt-1 " type="text" name="first_name" value="<?= old("first_name") ?>" placeholder="Ingrese el nombre" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                     </div>
                     <div class="invalid-feedback">Este campo es obligatorio</div>
                     <small class="text-danger"><?= session("errors.firstname_name") ?></small>
@@ -43,8 +43,8 @@ Agregar un estudiante
 
                   <div class="col-md-6 mb-4">
                     <label class="label fs-6">Segundo Nombre: <small class="text-secondary">(Opcional)</small></label>
-                    <input class="form-control mt-1 " type="text" name="second_name" value="<?= old("second_name")?>" placeholder="Ingrese el segundo nombre " style="background-color: <?= config("G3stor")->secondColor ?>;">
-                  <small class="text-danger"><?= session("errors.second_name") ?></small>
+                    <input class="form-control mt-1 " type="text" name="second_name" value="<?= old("second_name") ?>" placeholder="Ingrese el segundo nombre " style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <small class="text-danger"><?= session("errors.second_name") ?></small>
 
                   </div>
 
@@ -53,15 +53,15 @@ Agregar un estudiante
                 <div class="row">
                   <div class="col-md-6 mb-4">
                     <label class="label req fs-6">Primer Apellido:</label>
-                    <input class="form-control mt-1 " type="text" name="first_lastname" value="<?= old("first_lastname")?>" placeholder="Ingrese el Primer Apellido" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <input class="form-control mt-1 " type="text" name="first_lastname" value="<?= old("first_lastname") ?>" placeholder="Ingrese el Primer Apellido" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                     <div class="invalid-feedback">Este campo es obligatorio</div>
-                  <small class="text-danger"><?= session("errors.first_lastname") ?></small>
+                    <small class="text-danger"><?= session("errors.first_lastname") ?></small>
                   </div>
 
                   <div class="col-md-6 mb-4">
                     <label class="label fs-6">Segundo Apellido: <small class="text-secondary">(Opcional)</small></label>
-                    <input class="form-control mt-1 " type="text" name="second_lastname" value="<?= old("second_lastname")?>" placeholder="Ingrese el segundo apellido" style="background-color: <?= config("G3stor")->secondColor ?>;">
-                  <small class="text-danger"><?= session("errors.second_lastname") ?></small>
+                    <input class="form-control mt-1 " type="text" name="second_lastname" value="<?= old("second_lastname") ?>" placeholder="Ingrese el segundo apellido" style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <small class="text-danger"><?= session("errors.second_lastname") ?></small>
 
                   </div>
                 </div>
@@ -69,7 +69,7 @@ Agregar un estudiante
                 <div class="row">
                   <div class="col-md-6  mb-4">
                     <label class="label req fs-6">Tipo de Documento:</label>
-                    <select name="id_doc_type"class="form-select mt-1" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <select name="id_doc_type" class="form-select mt-1" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                       <option selected disabled hidden value="">Selecciona tipo de documento</option>
                       <?php foreach ($documentTypes as $type) : ?>
                         <option value="<?= $type->id_dparam ?>" <?php if ($type->id_dparam == old("id_doc_type")) : ?> selected <?php endif ?>><?= $type->nombre ?></option>
@@ -77,15 +77,15 @@ Agregar un estudiante
                     </select>
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback">Este campo es obligatorio</div>
-                  <small class="text-danger"><?= session("errors.id_doc_type") ?></small>
+                    <small class="text-danger"><?= session("errors.id_doc_type") ?></small>
 
                   </div>
 
                   <div class="col-md-6 mb-4">
                     <label class="label req fs-6"># documento:</label>
-                    <input class="form-control mt-1 " type="text" name="document"  value="<?= old("document") ?>" placeholder="Ingrese el # de documento" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <input class="form-control mt-1 " type="text" name="document" value="<?= old("document") ?>" placeholder="Ingrese el # de documento" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                     <div class="invalid-feedback">Este campo es obligatorio</div>
-                  <small class="text-danger"><?= session("errors.document") ?></small>
+                    <small class="text-danger"><?= session("errors.document") ?></small>
 
                   </div>
 
@@ -101,7 +101,7 @@ Agregar un estudiante
                       <?php endforeach; ?>
                     </select>
                     <div class="invalid-feedback">Este campo es obligatorio</div>
-                  <small class="text-danger"><?= session("errors.id_civil") ?></small>
+                    <small class="text-danger"><?= session("errors.id_civil") ?></small>
 
                   </div>
 
@@ -110,11 +110,11 @@ Agregar un estudiante
                     <select name="id_genre" class="form-select mt-1" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                       <option selected disabled hidden value="">Selecciona el genero</option>
                       <?php foreach ($genres as $genre) : ?>
-                        <option value="<?=$genre->id_dparam ?>" <?php if ($genre->id_dparam == old("id_genre")) : ?> selected <?php endif ?>><?= $genre->nombre ?></option>
+                        <option value="<?= $genre->id_dparam ?>" <?php if ($genre->id_dparam == old("id_genre")) : ?> selected <?php endif ?>><?= $genre->nombre ?></option>
                       <?php endforeach; ?>
                     </select>
                     <div class="invalid-feedback">Este campo es obligatorio</div>
-                  <small class="text-danger"><?= session("errors.id_genre") ?></small>
+                    <small class="text-danger"><?= session("errors.id_genre") ?></small>
 
                   </div>
 
@@ -133,15 +133,15 @@ Agregar un estudiante
                       <?php endforeach; ?>
                     </select>
                     <div class="invalid-feedback">Este campo es obligatorio</div>
-                  <small class="text-danger"><?= session("errors.id_program") ?></small>
+                    <small class="text-danger"><?= session("errors.id_program") ?></small>
 
                   </div>
 
                   <div class="col-md-6 mb-4">
                     <label class="label req fs-6">Teléfono:</label>
-                    <input class="form-control mt-1 " type="text" name="phone"  value="<?= old("phone") ?>" placeholder="Ingrese el numero de telefono" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <input class="form-control mt-1 " type="text" name="phone" value="<?= old("phone") ?>" placeholder="Ingrese el numero de telefono" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                     <div class="invalid-feedback">Este campo es obligatorio</div>
-                  <small class="text-danger"><?= session("errors.phone") ?></small>
+                    <small class="text-danger"><?= session("errors.phone") ?></small>
 
                   </div>
 
@@ -152,9 +152,9 @@ Agregar un estudiante
 
                   <div class="col-md-6 mb-4">
                     <label class="label req fs-6">Correo Electrónico:</label>
-                    <input class="form-control mt-1 " type="email" name="email"  value="<?= old("email") ?>" placeholder="Ingrese el correo electrónico" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <input class="form-control mt-1 " type="email" name="email" value="<?= old("email") ?>" placeholder="Ingrese el correo electrónico" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                     <div class="invalid-feedback">Ingresa un correo válido</div>
-                  <small class="text-danger"><?= session("errors.email") ?></small>
+                    <small class="text-danger"><?= session("errors.email") ?></small>
 
                   </div>
 
@@ -163,7 +163,7 @@ Agregar un estudiante
                     <label class="label req fs-6">Dirección de residencia:</label>
                     <input class="form-control mt-1 " type="text" name="address" value="<?= old("address") ?>" placeholder="Ingrese la dirección de residencia" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                     <div class="invalid-feedback">Este campo es obligatorio</div>
-                  <small class="text-danger"><?= session("errors.address") ?></small>
+                    <small class="text-danger"><?= session("errors.address") ?></small>
 
                   </div>
 

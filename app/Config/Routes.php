@@ -65,7 +65,7 @@ $routes->group("libros", ["namespace" => "App\Controllers\Book"], function ($rou
     $routes->get("autores/editar/(:any)", "Autors::edit/$1", ["as" => "autors_edit"]);
     $routes->post("autores/actualizar", "Autors::update", ["as" => "autors_update"]);
 
-    $routes->get("autores/eliminar/(:any)", "Autors::delete/$1", ["as" => "autors_delete"]);
+    $routes->get("autores/eliminar/(:num)", "Autors::delete/$1", ["as" => "autors_delete"]);
 
 
 
@@ -77,10 +77,10 @@ $routes->group("libros", ["namespace" => "App\Controllers\Book"], function ($rou
     $routes->post("editoriales/guardar", "Editorials::store", ["as" => "editorials_store"]);
     $routes->post("editoriales/buscar", "Editorials::getEditorialByName", ["as" => "getEditorialByName"]);
 
-    $routes->get("editoriales/editar/(:any)", "Editorials::edit/$1", ["as" => "editorial_edit"]);
+    $routes->get("editoriales/editar/(:any)", "Editorials::edit/$1", ["as" => "editorials_edit"]);
     $routes->post("editoriales/actualizar", "Editorials::update", ["as" => "editorials_update"]);
 
-    $routes->get("editoriales/eliminar/(:any)", "Editorials::delete/$1", ["as" => "editorial_delete"]);
+    $routes->get("editoriales/eliminar/(:num)", "Editorials::delete/$1", ["as" => "editorials_delete"]);
 
 
 

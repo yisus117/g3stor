@@ -9,12 +9,12 @@ class Editorial extends Entity
 {
   public function getEditLine($id)
   {
-    return base_url(route_to("editorial_edit", $id));
+    return base_url(route_to("editorials_edit", $id));
   }
 
   public function getDeleteLine($id)
   {
-    return base_url(route_to("editorial_delete", $id));
+    return base_url(route_to("editorials_delete", $id));
   }
 
   public function __toString()

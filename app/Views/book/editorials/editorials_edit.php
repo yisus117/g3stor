@@ -28,44 +28,52 @@ Editar editorial: <?= $editorial->nombre ?>
         <div class="form-holder">
           <div class="form-content container">
             <div class="form-items" style="background-color: <?= config("G3stor")->mainColor ?>;">
-              <h3 class="mb-4 fw-normal">Editar editorial: "<?= $editorial->nombre ?>"</h3>
+              <h3 class="mb-4 fw-normal ">Editar editorial: "<?= $editorial->Nombre ?>"</h3>
 
               <form class="requires-validation" novalidate action="<?= base_url(route_to("editorials_update")) ?>" method="POST">
 
-                <input type="hidden" class="form-control mt-1 " type="text" name="id_editorial" value="<?= $editorial->id_editorial ?>" required>
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+                    <label class="label fs-6">ID de registro</label>
+                    <input readonly class="form-control mt-1 " type="text" name="id_editorial" value="<?= $editorial->id_editorial ?>" required>
+                  </div>
 
-                <div class="col-md-12 mb-4">
-                  <label class="label fs-6">Nombre:</label>
-                  <input class="form-control mt-1 " type="text" name="name" value="<?= old("name") ?? $editorial->nombre ?>" placeholder="Ingrese el nombre" required>
-                  <div class="invalid-feedback">El campo de nombre no puede estar en blanco</div>
-                  <small class=" help text-danger"><?= session("errors.name") ?></small>
+                  <div class="col-md-6 mb-4">
+                    <label class="label fs-6">Nombre:</label>
+                    <input class="form-control mt-1 " type="text" name="name" value="<?= old("name") ?? $editorial->Nombre ?>" placeholder="Ingrese el nombre" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <div class="invalid-feedback">Este campo es obligatorio</div>
+                    <small class="text-danger"><?= session("errors.name") ?></small>
+                  </div>
+
                 </div>
 
-                <div class="col-md-12 mb-4 mt-3">
-                  <label class="label fs-6">Pais:</label>
-                  <select name="id_country" value="" class="form-select mt-1" required>
-                    <?php foreach ($countries as $country) : ?>
-                      <option value="<?= $country->id_pais ?>" <?php if ($country->id_pais == $editorial->id_pais) : ?> selected <?php endif ?>  >
-                        <?= $country->nombre ?>
-                      </option>
-                    <?php endforeach; ?>
-                  </select>
-                  <div class="invalid-feedback">Por favor selecciona un pais</div>
-                  <small class=" help text-danger"><?= session("errors.id_country") ?></small>
-                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-4 ">
+                    <label class="label fs-6">Pais:</label>
+                    <select name="id_country" value="" class="form-select mt-1" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                      <?php foreach ($countries as $country) : ?>
+                        <option value="<?= $country->id_pais ?>" <?php if ($country->id_pais == $editorial->id_pais) : ?> selected <?php endif ?>>
+                          <?= $country->nombre ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+                    <div class="invalid-feedback">Este campo es obligatorio</div>
+                    <small class="text-danger"><?= session("errors.id_country") ?></small>
+                  </div>
 
-                <div class="col-md-12 mb-4 mt-3">
-                  <label class="label fs-6">Estado:</label>
-                  <select name="state" class="form-select mt-1" required >
-                    <?php if (service("request")->uri->getPath() == "libros/editoriales/crear") : ?>
-                      <option value="1">Activo</option>
-                    <?php else : ?>
-                      <option value="1" <?php if ($editorial->estado == "1") : ?> selected <?php endif ?>>Activo</option>
-                      <option value="2"  <?php if ($editorial->estado == "2") : ?> selected <?php endif ?>>Inactivo</option>
-                    <?php endif ?>
-                  </select>
-                  <div class="invalid-feedback">Por favor elije un estado</div>
-                  <small class=" help text-danger"><?= session("errors.state") ?></small>
+                  <div class="col-md-6 mb-4 ">
+                    <label class="label fs-6">Estado:</label>
+                    <select name="state" class="form-select mt-1" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                      <?php if (service("request")->uri->getPath() == "libros/editoriales/crear") : ?>
+                        <option value="1">Activo</option>
+                      <?php else : ?>
+                        <option value="1" <?php if ($editorial->estado == "1") : ?> selected <?php endif ?>>Activo</option>
+                        <option value="2" <?php if ($editorial->estado == "2") : ?> selected <?php endif ?>>Inactivo</option>
+                      <?php endif ?>
+                    </select>
+                    <div class="invalid-feedback">Este campo es obligatorio</div>
+                    <small class="text-danger"><?= session("errors.state") ?></small>
+                  </div>
                 </div>
 
                 <div class="form-button mt-3 d-flex justify-content-center">
@@ -82,5 +90,3 @@ Editar editorial: <?= $editorial->nombre ?>
 
 </section>
 <?= $this->endSection() ?>
-
-

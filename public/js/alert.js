@@ -1,12 +1,13 @@
-(function() {
-  $(".delete").click(function(e) {
+(function () {
+  $(".delete").click(function (e) {
     e.preventDefault();
     var id = $(this).parents("tr").find("td:first").text();
-    console.log(id);
     var name = $(this).attr("data-name");
+    ruta = location.pathname;
 
-    $(".delete").prop('disabled', true)
-    $("a").removeAttr('href');
+    $(".delete").prop("disabled", true);
+    $("a").removeAttr("href");
+
 
     swal
       .fire({
@@ -18,16 +19,16 @@
         cancelButtonColor: "#6c757d",
         confirmButtonText: "Aceptar",
         cancelButtonText: "Cancelar",
-        allowOutsideClick: true
+        allowOutsideClick: true,
       })
       .then((isConfirmed) => {
         if (isConfirmed.value) {
           $.ajax({
-            url: "/estudiantes/eliminar/" + id,
-            success: function(response) {
-              window.location.reload();
+            url: `${ruta}/eliminar/${id}`,
+            success: function (response) {
+              location.reload();
             },
-            error: function() {
+            error: function () {
               swal.fire(
                 "Error!",
                 "Error al tratar de eliminar el registro",
@@ -36,10 +37,9 @@
             },
           });
         } else {
-          $(".delete").prop('disabled', false)
+          $(".delete").prop("disabled", false);
         }
-      })
+      });
   });
-  $(".delete").prop('disabled', false)
-
+  $(".delete").prop("disabled", false);
 })();

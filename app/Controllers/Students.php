@@ -21,24 +21,17 @@ class Students extends BaseController
       $state = 2;
     }
 
-    session()->setFlashdata([
-      "success" => "asdf"
-    ]);
-
-
-
     if ($q or $q === "") {
       $field = trim($this->request->getGet("field"));
       $students = $model->getStudentsByName($field, $q, $state)->paginate(config("G3stor")->regPerPage);
       $data["students"] = $students;
       $data["countStudents"] =  count($students);
-      $data["query"] = $q;
     } else {
       $data["students"] =  $model->getStudents(1)->paginate(config("G3stor")->regPerPage);
-      $data["countStudents"] = $model->countStudents(1)["contar_estudiantes_activos(1)"];
-      $data["query"] = "";
+      $data["countStudents"] = $model->countStudents(1);
     };
-
+    
+    $data["query"] = $q ?? "";
     $data["pager"] = $model->pager;
     $data["fields"] = $fields;
 
@@ -62,6 +55,7 @@ class Students extends BaseController
     ]);
   }
 
+
   public function store()
   {
 
@@ -76,43 +70,52 @@ class Students extends BaseController
       "id_genre" => "required|is_not_unique[v_genero.id_dparam]",
       "id_program" => "required|is_not_unique[programas.id_programa]",
       "phone" => "required|max_length[15]",
-      "email" => "required|valid_email|is_unique[estudiantes.correo]",
+      "email" => "required|valid_email",
       "address" => "required|max_length[150]",
     ])) {
-      return redirect()->back()->withInput()->with("msg", [
-        "type" => "warning",
-        "body" => "Tienes campos incorrectos"
-      ])->with("errors", $this->validator->getErrors());
+         session()->setFlashdata("status_text", "tiene uno o varios errores con el registro");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
+    }
+
+    if (!$this->validate([
+      "email" => "required|valid_email|is_unique[estudiantes.correo]",
+    ])) {
+      session()->setFlashdata("status_text", "El correo ingresado ya esta siendo utilizado por otro estudiante");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, El correo "' .  trim($this->request->getPost("email")) . '" ya existe')->with("errors", $this->validator->getErrors());
     }
 
 
-    $model = model("StudentsModel");
-    $model->insertStudent(
-      trim($this->request->getPost("first_name")),
-      trim($this->request->getPost("second_name")),
-      trim($this->request->getPost("first_lastname")),
-      trim($this->request->getPost("second_lastname")),
-      trim($this->request->getPost("id_doc_type")),
-      trim($this->request->getPost("document")),
-      trim($this->request->getPost("id_genre")),
-      trim($this->request->getPost("id_civil")),
-      trim($this->request->getPost("address")),
-      trim($this->request->getPost("email")),
-      trim($this->request->getPost("id_program")),
-      trim($this->request->getPost("phone")),
-    );
+    try {
+      $model = model("StudentsModel");
+      $model->insertStudent(
+        trim($this->request->getPost("first_name")),
+        trim($this->request->getPost("second_name")),
+        trim($this->request->getPost("first_lastname")),
+        trim($this->request->getPost("second_lastname")),
+        trim($this->request->getPost("id_doc_type")),
+        trim($this->request->getPost("document")),
+        trim($this->request->getPost("id_genre")),
+        trim($this->request->getPost("id_civil")),
+        trim($this->request->getPost("address")),
+        trim($this->request->getPost("email")),
+        trim($this->request->getPost("id_program")),
+        trim($this->request->getPost("phone")),
+      );
+    } catch (\Throwable $th) {
+      //throw $th;
+    }
 
-
-
-    return redirect("students")->with("msg", [
-      "type" => "success",
-      "body" => "El estudiante fue agregado exitosamente"
-    ]);
+    session()->setFlashdata("status", "Estudiante agregado correctamente");
+    return redirect("students")->with("status_icon", "success");
   }
+
+
   public function edit(string $id)
   {
     $model = model("StudentsModel");
-    if (!$student = $model->find($id)) {
+    if (!$student = $model->where("activo !=", 0)->find($id)) {
       throw PageNotFoundException::forPageNotFound();
     }
     $modelCivil = model("VCivilStatusModel");
@@ -148,10 +151,9 @@ class Students extends BaseController
       "state" => "required",
 
     ])) {
-      return redirect()->back()->withInput()->with("msg", [
-        "type" => "warning",
-        "body" => "Tienes campos incorrectos"
-      ])->with("errors", $this->validator->getErrors());
+      session()->setFlashdata("status_text", "tiene uno o varios errores con el registro");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
     }
 
     $id_student = trim($this->request->getPost("id_student"));
@@ -176,10 +178,8 @@ class Students extends BaseController
       $student = $model->find($id_student);
 
       if ($first_name == $student->primer_nombre && $second_name == $student->segundo_nombre && $first_lastname == $student->primer_apellido && $second_lastname == $student->segundo_apellido && $id_doc_type == $student->tipo_documento && $document == $student->documento && $id_genre == $student->sexo && $id_civil == $student->estado_civil && $address == $student->direccion  && $email == $student->correo && $id_program == $student->id_programa && $phone == $student->telefono  && $state == $student->activo) {
-        return redirect("students")->with("msg", [
-          "type" => "secondary",
-          "body" => "Sin cambios"
-        ]);
+        session()->setFlashdata("status", "No hubo cambios");
+        return redirect("editorials")->with("status_icon", "info");
       }
 
       if ($email !== $student->correo) {
@@ -216,10 +216,9 @@ class Students extends BaseController
         $state,
       );
     } catch (Exception $e) {
-      return redirect("students")->with("msg", [
-        "type" => "warning",
-        "body" => "Disculpe, Error con el servidor. Contacte con administrador del sistema"
-      ])->with("errors", $this->validator->getErrors());
+      session()->setFlashdata("status_text", "Comuniquese con el administrador del sistema");
+      return redirect("students")->with("status_icon", "error")
+        ->with("status", "Disculpe, ocurrió un error al actulizar el registro");
     }
 
     session()->setFlashdata("status", "Estudiante actualizado correctamente");
@@ -229,14 +228,16 @@ class Students extends BaseController
 
   public function delete($id)
   {
-
+   
     $model = model("StudentsModel");
-    $model->deleteStudent($id);
 
+    try {
+      $model->deleteStudent($id);
+    } catch (Exception $e) {
+      echo $e;
+    }
 
-
-
-    session()->setFlashdata("status", "Estudiante Eliminado correctamente");
+    session()->setFlashdata("status", "Estudiante fue Eliminado correctamente");
     redirect("students")->with("status_icon", "success");
     return;
   }

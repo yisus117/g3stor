@@ -11,128 +11,166 @@ Editorial
 <nav class="mt-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item  text-info"><a href="<?= base_url(route_to("home")) ?>">Inicio</a></li>
-    <li class="breadcrumb-item "><a href="<?= base_url(route_to("books")) ?>">Libros</a></li>
+    <li class="breadcrumb-item  text-info"><a href="<?= base_url(route_to("books")) ?>">Libros</a></li>
     <li class="breadcrumb-item active">Editoriales</li>
   </ol>
 </nav>
 <?= $this->endSection() ?>
 
-<section class="section min-vh-100">
+<section class="section min-vh-100 mt-3">
   <div class="container-fluid">
-    <div class="container-fluid ">
 
-      <!-- table -->
-      <div class="table-wrapper m-1 card" style="border: 3px solid <?= config("G3stor")->mainColor ?>">
+    <!-- table -->
+    <div class="table-wrapper m-1 card" style="border: 3px solid <?= config("G3stor")->mainColor ?>">
 
-        <div class="table-title" style="outline: 3px solid <?= config("G3stor")->mainColor ?> ;background-color: <?= config("G3stor")->mainColor ?>">
-          <div class="row d-flex flex-row gap-4 gap-md-0 position-relative">
-            <div class="col-sm-12 col-md-3 d-flex align-items-center">
-              <a href="<?= base_url(route_to("editorials")) ?>" class="d-inline h3 text-sm-center text-md-start text-white">Editoriales</a>
-            </div>
-            <div class="col-sm-12 col-md-6 p-2 rounded" style="background: <?= config("G3stor")->secondColor ?>">
-              <form action="" method="GET" class="search">
-                <input name="q" value="<?= $query ?? '' ?>" type="text" class="form-control" placeholder="Buscar un libro">
-                <div class="d-flex justify-content-center align-items-center">
+      <div class="table-title gap-4" style="outline: 3px solid <?= config("G3stor")->mainColor ?> ;background-color: <?= config("G3stor")->secondColor ?>">
 
-                  <div class="active-group d-flex flex-column ms-2 ">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" value="1" name="active" id="active" <?= service("request")->uri->getQuery(['only' => ['active']]) !== "active=2" ? "checked" : ""  ?> />
-                      <label class="form-check-label" for="active">Activos</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" value="2" name="active" id="inactive" <?= service("request")->uri->getQuery(['only' => ['active']]) == "active=2" ? "checked" : ""  ?> />
-                      <label class="form-check-label" for="inactive">Inactivos</label>
-                    </div>
-                  </div>
-                  <button class="btn d-flex align-items-center justify-content-center" style="background: <?= config("G3stor")->mainColor ?>">
-                    <i class="fa-solid fa-magnifying-glass fs-6"></i>
 
-                  </button>
-                </div>
-              </form>
+        <div class="row">
+          <div class="col-6  d-flex align-items-center justify-content-between">
+            <a href="<?= base_url(route_to("editorials")) ?>" class="title-hover no_wrap d-inline h3 text-sm-center text-md-start text-white">
+              Editoriales
+              <i class="fa-solid fa-arrows-rotate fs-5 text-secondary"></i>
+            </a>
+          </div>
 
-              <span class=" pt-4"><strong class="me-1"> Buscar: </strong><?= !$query ? 'Todos,' : '"' . $query . '",' ?> <strong class="ms-2 me-1"> En:</strong> </span>
-              <?php if (service("request")->uri->getQuery(['only' => ['active']]) !== "active=2") : ?>
-                <span class="card d-inline bg-success px-2 py-0 fw-normal">
-                  Activos
-                </span>
-              <?php else : ?>
-                <span class="card d-inline bg-warning px-2 py-0 fw-normal">
-                  Inactivos
-                </span>
-              <?php endif ?>
-              <span class="ms-3">
-                <?= $query ? $countEditorials . " Coincidencias" : "" ?>
-              </span>
-            </div>
-            <div class="col-sm-12 col-md-3 position-absolute top-0 end-0 ">
-              <a href="<?= base_url(route_to("editorials_create")) ?>" class="btn btn-secondary p-2 px-3 mt-1 d-flex align-items-center gap-2 " style="color: white; background-color: <?= config("G3stor")->secondColor ?>">
-                <i class="fa-solid fa-plus"></i>
-                <span class="fs-6">Agregar</span>
-              </a>
-            </div>
+          <div class="col-6  ">
+            <a href="<?= base_url(route_to("editorials_create")) ?>" class="btn btn-secondary p-2 px-3 mt-1 d-flex align-items-center gap-2 " style="color: white; background-color: <?= config("G3stor")->mainColor ?>" title="Agregar un nuevo registro">
+              <i class="fa-solid fa-plus"></i>
+              <span class="fs-6">Agregar</span>
+            </a>
           </div>
         </div>
 
-        <?php if (!$editorials && !$query) : ?>
-          <p class="mt-3 display-2 text-center" style="color: <?= config("G3stor")->mainColor ?>;">
-            <i class="fa-regular fa-face-frown-open"></i>
-          </p>
-          <h3 class="mb-5 text-center" style="color: <?= config("G3stor")->mainColor ?>;">Sin registros</h3>
-        <?php elseif (!$query == "" && $countEditorials == 0) : ?>
-          <p class="mt-3 display-2 text-center" style="color: <?= config("G3stor")->mainColor ?>;">
-            <i class="fa-regular fa-face-frown-open"></i>
-          </p>
-          <h3 class="mb-5 text-center" style="color: <?= config("G3stor")->mainColor ?>;">Sin registros para: "<?= $query ?>"</h3>
+        <div class="row justify-content-center align-items-center g-2 rounded mt-2" style="background: <?= config("G3stor")->mainColor ?>">
 
-        <?php else : ?>
-          <table class="table table-striped table-hover">
-            <thead>
+          <div class="col-lg-12 p-1 mx-auto py-2 ">
+            <form method="GET">
+              <div class="search row d-flex justify-content-center align-items-center gap-2">
+                <div class="col-6 col-md-3 m-0 pe-0">
+                  <select name="field" class="form-select border-0 fw-semibold " required style="background-color: <?= config("G3stor")->grayColor ?>; color: <?= config("G3stor")->textColor ?>;">
+                    <option selected hidden value="Nombre">Nombre</option>
+                    <?php foreach ($fields  as $field) : ?>
+                      <option <?= service("request")->uri->getQuery(['only' => ['field']]) == "field=" . $field ? "selected" : ""  ?> value="<?= $field ?>"><?= ucfirst(str_replace("_", " ", $field)) ?></option>
+                    <?php endforeach; ?>
+
+                  </select>
+                </div>
+
+                <div class="col-2 col-md-2 mt-0 ps-0">
+                  <div class=" d-flex flex-column justify-content-center">
+                    <div class="d-flex">
+                      <div class="card check-btn d-flex flex-column ms-2 ">
+                        <label for="checkbox" title="Buscar registros activos o inactivos" class="no_wrap">
+                          <input type="checkbox" id="checkbox" name="activos" <?php if (service("request")->uri->getQuery(['only' => ['activos']]) == "activos=on" || !service("request")->uri->getQuery(['only' => ['q']])) :  ?> checked <?php endif ?>>
+                          <span>
+                            <i class="fa-solid fa-hand-pointer"></i>
+                            Activos
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-8 col-md-6 m-0 p-0">
+                  <div class="d-flex justify-content-around  ">
+                    <input name="q" value="<?= $query ?? '' ?>" type="text" class="form-control fw-semibold" placeholder="Buscar estudiante" style="background-color: <?= config("G3stor")->grayColor ?>; color: <?= config("G3stor")->textColor ?>;">
+                    <button class="btn d-flex align-items-center justify-content-center" style="background: <?= config("G3stor")->secondColor ?>" title="Buscar un registro">
+                      <i class="fa-solid fa-magnifying-glass fs-6"></i>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+        <div class="row mt-1">
+          <div class="d-flex justify-content-start">
+            <span class=""><strong class="me-1"> Buscar: </strong><?= !$query ? 'Todos,' : '"' . $query . '",' ?> <strong class="ms-2 me-1"> En:</strong> </span>
+
+            <?php if (service("request")->uri->getQuery(['only' => ['activos']]) == "activos=on" || !service("request")->uri->getQuery(['only' => ['q']])) : ?>
+              <span class="rounded d-inline bg-success px-2 py-0 fw-normal">
+                Activos
+              </span>
+            <?php else : ?>
+              <span class="rounded d-inline bg-warning px-2 py-0 fw-normal">
+                Inactivos
+              </span>
+            <?php endif ?>
+            <span class="ms-3">
+              <?= $query ? $countEditorials . " Coincidencias" : "" ?>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <?php if (!$editorials && !$query) : ?>
+        <p class="mt-3 display-2 text-center" style="color: <?= config("G3stor")->mainColor ?>;">
+          <i class="fa-regular fa-face-frown-open"></i>
+        </p>
+        <h3 class="mb-5 text-center" style="color: <?= config("G3stor")->mainColor ?>;">Sin registros</h3>
+      <?php elseif (!$query == "" && $countEditorials == 0) : ?>
+        <p class="mt-3 display-2 text-center" style="color: <?= config("G3stor")->mainColor ?>;">
+          <i class="fa-regular fa-face-frown-open"></i>
+        </p>
+        <h3 class="mb-5 text-center" style="color: <?= config("G3stor")->mainColor ?>;">Sin registros para: "<?= $query ?>" <br /> en el campo: "<?= str_replace("field=", "", (str_replace("_", " ", service("request")->uri->getQuery(['only' => ['field']])))) ?>"</h3>
+
+      <?php else : ?>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombres</th>
+              <th>Pais</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <?php foreach ($editorials as $editorial) : ?>
               <tr>
-                <th>Nombre</th>
-                <th>pais</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <?php foreach ($editorials as $editorial) : ?>
-                <tr>
-                  <td><?= $editorial->nombre ?></td>
-                  <td><?= $editorial->pais ?></td>
-                  <td>
-                    <span class=" px-2 py-1 fw-bold  <?= $editorial->estado == "1" ? "bg-success text-white text-nowrap" :  ($editorial->estado === "2" ? "bg-warning text-dark text-nowrap" : "bg-danger") ?>">
-                      <?= $editorial->estado == "1" ? "Activo" :  ($editorial->estado === "2" ? "Inactivo" : "eliminado") ?>
-                    </span>
-                  </td>
-                  <td class="d-flex f-row gap-2 mx-0">
-                    <a href="<?= $editorial->getEditLine($editorial->id_editorial) ?>" class="btn btn-secondary text-white px-2 py-1 h-4 d-flex justify-content-center align-items-center">
+                <td><?= $editorial->id_editorial ?></td>
+                <td><?= $editorial->Nombre ?></td>
+                <td><?= $editorial->pais ?> </td>
+                <td>
+                  <span class=" px-2 py-1 fw-bold  <?= $editorial->estado == "1" ? "bg-success text-white text-nowrap" : ($editorial->estado === "2" ? "bg-warning text-dark text-nowrap" : "bg-danger") ?>">
+                    <?= $editorial->estado == "1" ? "estado" : ($editorial->estado === "2" ? "Inactivo" : "eliminado") ?>
+                  </span>
+                </td>
+                <td class="">
+                  <div class="d-flex f-row gap-2 mx-0 ">
+                    <a href="<?= $editorial->getEditLine($editorial->id_editorial) ?>" name="update" class="btn btn-secondary text-white update px-2 py-1 h-4 d-flex justify-content-center align-items-center">
                       <i class="fa-solid fa-edit fs-6"></i>
                     </a>
-                    <a href="<?= $editorial->getDeleteLine($editorial->id_editorial) ?>" class="btn btn-danger text-white px-2 py-1">
+                    <button type="button" data-name="<?= $editorial->Nombre ?>" class="btn btn-danger delete text-white px-2 py-1">
                       <i class="fa-solid fa-trash fs-6"></i>
-                    </a>
-                  </td>
-                </tr>
-              <?php endforeach ?>
-            </tbody>
-          </table>
-        <?php endif ?>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach ?>
+          </tbody>
+        </table>
+      <?php endif ?>
 
-        <div>
-          <div class="table-footer px-2">
-            <?= $pager->links() ?>
-            <div class="hint-cant text-secondary">
-              <?php if ($countEditorials == 0) : ?>
-                Sin registros
-              <?php elseif ($countEditorials == 1) : ?>
-                <?= $countEditorials ?> registro
-              <?php else : ?>
-                <?= $countEditorials ?> registros
+      <div>
+        <div class="table-footer px-2">
+          <?= $pager->links() ?>
+          <div class="hint-cant text-secondary">
+            <?php if ($countEditorials == 0) : ?>
+              Sin registros
+            <?php elseif ($countEditorials == 1) : ?>
+              <?= $countEditorials ?> registro
+            <?php else : ?>
+              <?= $countEditorials ?> registros
 
-              <?php endif ?>
-            </div>
+            <?php endif ?>
           </div>
         </div>
       </div>
@@ -141,5 +179,9 @@ Editorial
 
 </section>
 
+<?= $this->endSection() ?>
 
+
+<?= $this->section('js') ?>
+<script src="<?= base_url("/js/alert.js") ?>"></script>
 <?= $this->endSection() ?>

@@ -259,6 +259,10 @@ table.table tr td {
   word-wrap: break-word;
 }
 
+table.table tr th {
+  white-space: nowrap;
+}
+
 table.table-striped tbody tr:nth-of-type(odd) {
   background-color: #c8c8c8;
 }

@@ -4,32 +4,35 @@ namespace App\Controllers\Book;
 
 use App\Controllers\BaseController;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use Exception;
 
 class Autors extends BaseController
 {
   public function index()
   {
-    $model = model("AutorsModel");
-    if ($this->request->getGet("active") != "2") {
+    $model = model("VAutors");
+
+    $q = $this->request->getGet("q");
+
+    if ($this->request->getGet("activos") === "on") {
       $state = 1;
     } else {
       $state = 2;
     }
 
-    if ($this->request->getGet("q")) {
-      $q = trim($this->request->getGet("q"));
-      $editorial = $model->getAutorsByName($q, $state)->paginate(config("G3stor")->regPerPage);
-      $data["autors"] = $editorial;
-      $data["countAutors"] =  count($editorial);
-      $data["query"] = $q;
-      $data["pager"] = $model->pager;
+    if ($q or $q === "") {
+      $field = trim($this->request->getGet("field"));
+      $autors = $model->getAutorBy($field, $q, $state)->paginate(config("G3stor")->regPerPage);
+      $data["autors"] = $autors;
+      $data["countAutors"] =  count($autors);
     } else {
-      $data["autors"] =  $model->getAutors($state)->paginate(config("G3stor")->regPerPage);
-      $data["countAutors"] = $model->countAutors($state)["contar_autores_activos($state)"];
-      $data["query"] = "";
-      $data["pager"] = $model->pager;
-    }
+      $data["autors"] =  $model->getAutors(1)->paginate(config("G3stor")->regPerPage);
+      $data["countAutors"] = $model->countAutors(1);
+    };
 
+    $data["query"] = $q ?? "";
+    $data["pager"] = $model->pager;
+    $data["fields"] = $model->getFields();
 
     return view('book/autors/autors', $data);
   }
@@ -38,7 +41,7 @@ class Autors extends BaseController
     $model = model("CountriesModel");
 
     return view('book/autors/autors_create', [
-      "countries" => $model->findAll()
+      "countries" => $model->where("estado", 1)->findAll()
     ]);
   }
 
@@ -51,13 +54,12 @@ class Autors extends BaseController
       "first_lastname" => "required|max_length[50]",
       "second_lastname" => "max_length[50]",
       "pseudonym" => "max_length[50]",
-      "address" => "required|max_length[200]",
+      "address" => "max_length[200]",
       "id_country" => "required|is_not_unique[paises.id_pais]",
     ])) {
-      return redirect()->back()->withInput()->with("msg", [
-        "type" => "warning",
-        "body" => "Tienes campos incorrectos"
-      ])->with("errors", $this->validator->getErrors());
+      session()->setFlashdata("status_text", "Existe uno o varios errores con el registro");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
     }
 
     $firstName = trim($this->request->getVar("first_name"));
@@ -80,24 +82,22 @@ class Autors extends BaseController
       "id_pais" => $idCountry,
     ]);
 
-    return redirect("autors")->with("msg", [
-      "type" => "success",
-      "body" => "La categoria fue agregada exitosamente"
-    ]);
+    session()->setFlashdata("status", "Autor agregado correctamente");
+    return redirect("autors")->with("status_icon", "success");
   }
 
 
   public function edit(string $id)
   {
     $model = model("AutorsModel");
-    if (!$autor = $model->find($id)) {
+    if (!$autor = $model->where("estado !=", 0)->find($id)) {
       throw PageNotFoundException::forPageNotFound();
     }
     $cModel = model("CountriesModel");
 
     return view("book/autors/autors_edit", [
       "autor" => $autor,
-      "countries" => $cModel->findAll()
+      "countries" => $cModel->where("estado", 1)->findAll()
     ]);
   }
 
@@ -115,10 +115,9 @@ class Autors extends BaseController
       "address" => "required|max_length[200]",
       "id_country" => "required|is_not_unique[paises.id_pais]",
     ])) {
-      return redirect()->back()->withInput()->with("msg", [
-        "type" => "warning",
-        "body" => "Tienes campos incorrectos"
-      ])->with("errors", $this->validator->getErrors());
+      session()->setFlashdata("status_text", "Existe uno o varios errores con el registro");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
     }
     $idAutor = trim($this->request->getVar("id_autor"));
     $firstName = trim($this->request->getVar("first_name"));
@@ -157,10 +156,8 @@ class Autors extends BaseController
       "estado" => $state,
     ]);
 
-    return redirect("autors")->with("msg", [
-      "type" => "info",
-      "body" => "La categoria fue actualizada exitosamente"
-    ]);
+    session()->setFlashdata("status", "Autor actualizado correctamente");
+    return redirect("autors")->with("status_icon", "success");
   }
 
 
@@ -168,17 +165,16 @@ class Autors extends BaseController
 
   public function delete(string $id)
   {
-    $model = model("AutorsModel");
-    $autor = $model->find($id);
-    $string = implode(',', $autor->toRawArray());
-    $autor = explode(',', $string);
-    $model->oldInfo = $autor;
+    
+    try {
+      $model = model("AutorsModel");
+      $model->deleteAutor($id);
+    } catch (Exception $e) {
+      echo $e;
+    }
 
-    $model->deleteAutor($id);
-
-    return redirect("autors")->with("msg", [
-      "type" => "danger",
-      "body" => "La categoria fue eliminada"
-    ]);
+    session()->setFlashdata("status", "Autor fue Eliminado correctamente");
+    redirect("autors")->with("status_icon", "success");
+    return;
   }
 }

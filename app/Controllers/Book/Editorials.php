@@ -4,34 +4,35 @@ namespace App\Controllers\Book;
 
 use App\Controllers\BaseController;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use Exception;
 
 class Editorials extends BaseController
 {
   public function index()
   {
-    $model = model("EditorialsModel");
-    if ($this->request->getGet("active") != "2") {
+    $model = model("VEditorials");
+
+    $q = $this->request->getGet("q");
+
+    if ($this->request->getGet("activos") === "on") {
       $state = 1;
     } else {
       $state = 2;
     }
 
-
-
-    if ($this->request->getGet("q")) {
-      $q = trim($this->request->getGet("q"));
-      $editorial = $model->getEditorialByName($q, $state)->paginate(config("G3stor")->regPerPage);
-      $data["editorials"] = $editorial ;
-      $data["countEditorials"] =  count($editorial);
-      $data["query"] = $q;
-      $data["pager"] = $model->pager;
+    if ($q or $q === "") {
+      $field = trim($this->request->getGet("field"));
+      $editorials = $model->getEditorialBy($field, $q, $state)->paginate(config("G3stor")->regPerPage);
+      $data["editorials"] = $editorials;
+      $data["countEditorials"] =  count($editorials);
     } else {
-      $data["editorials"] =  $model->getEditorials($state)->paginate(config("G3stor")->regPerPage);
-      $data["countEditorials"] = $model->countEditorials($state)["contar_editoriales_activos($state)"];
-      $data["query"] = "";
-      $data["pager"] = $model->pager;
-    }
+      $data["editorials"] =  $model->getEditorials(1)->paginate(config("G3stor")->regPerPage);
+      $data["countEditorials"] = $model->countEditorials(1);
+    };
 
+    $data["query"] = $q ?? "";
+    $data["pager"] = $model->pager;
+    $data["fields"] = $model->getFields();
 
     return view("book/editorials/editorials", $data);
   }
@@ -42,7 +43,7 @@ class Editorials extends BaseController
     $model = model("CountriesModel");
 
     return view('book/editorials/editorials_create', [
-      "countries" => $model->findAll()
+      "countries" => $model->where("estado", 1)->findAll()
     ]);
   }
 
@@ -53,36 +54,34 @@ class Editorials extends BaseController
       "name" => "required|max_length[100]",
       "id_country" => "required|is_not_unique[paises.id_pais]",
     ])) {
-      return redirect()->back()->withInput()->with("msg", [
-        "type" => "warning",
-        "body" => "Tienes campos incorrectos"
-      ])->with("errors", $this->validator->getErrors());
+      session()->setFlashdata("status_text", "Existe uno o varios errores con el registro");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
     }
 
     $model = model("EditorialsModel");
-    $model->save([
-      "nombre" => trim($this->request->getVar("name")),
-      "id_pais" => trim($this->request->getVar("id_country"))
-    ]);
+    $model->insertEditorial(
+      trim($this->request->getVar("name")),
+      trim($this->request->getVar("id_country"))
+    );
 
-    return redirect("editorials")->with("msg", [
-      "type" => "success",
-      "body" => "La editorial fue agregada exitosamente"
-    ]);
+
+    session()->setFlashdata("status", "Editorial agregada correctamente");
+    return redirect("editorials")->with("status_icon", "success");
   }
 
 
   public function edit(string $id)
   {
     $model = model("EditorialsModel");
-    if (!$editorial = $model->find($id)) {
+    if (!$editorial = $model->where("estado != ", 0)->find($id)) {
       throw PageNotFoundException::forPageNotFound();
     }
     $cModel = model("CountriesModel");
 
     return view("book/editorials/editorials_edit", [
       "editorial" => $editorial,
-      "countries" => $cModel->findAll()
+      "countries" => $cModel->where("estado =", 1)->findAll()
     ]);
   }
 
@@ -91,15 +90,14 @@ class Editorials extends BaseController
   {
 
     if (!$this->validate([
-      "name" => "required|max_length[200]",
+      "name" => "required|max_length[100]",
       "id_country" => "required|is_not_unique[paises.id_pais]",
       "id_editorial" => "required|is_not_unique[editoriales.id_editorial]",
       "state" => "required"
     ])) {
-      return redirect()->back()->withInput()->with("msg", [
-        "type" => "danger",
-        "body" => "Tienes campos incorrectos"
-      ])->with("errors", $this->validator->getErrors());
+      session()->setFlashdata("status_text", "Existe uno o varios errores con el registro");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
     }
 
     $newIdEditorial = trim($this->request->getVar("id_editorial"));
@@ -110,45 +108,39 @@ class Editorials extends BaseController
     $model = model("EditorialsModel");
 
     $editorial = $model->find($newIdEditorial);
-    
-    if ($newName == $editorial->nombre && $newIdCountry == $editorial->id_pais && $newState == $editorial->estado) {
-      return redirect("editorials")->with("msg", [
-        "type" => "secondary",
-        "body" => "Sin cambios"
-      ]);
+
+    if ($newName == $editorial->Nombre && $newIdCountry == $editorial->id_pais && $newState == $editorial->estado) {
+      session()->setFlashdata("status", "No hubo cambios");
+      return redirect("editorials")->with("status_icon", "info");
     }
     $string = implode(',', $editorial->toRawArray());
     $editorial = explode(',', $string);
     $model->oldInfo = $editorial;
 
-    $model->save([
-      "id_editorial" => $newIdEditorial,
-      "nombre" =>  $newName,
-      "id_pais" => $newIdCountry ,
-      "estado" => $newState,
-    ]);
+    $model->updateEditorial(
+      $newIdEditorial,
+      $newName,
+      $newIdCountry,
+      $newState
+    );
 
-    return redirect("editorials")->with("msg", [
-      "type" => "info",
-      "body" => "La Editorial fue actualizada exitosamente"
-    ]);
+    session()->setFlashdata("status", "Editorial actualizada correctamente");
+    return redirect("editorials")->with("status_icon", "success");
   }
 
 
   public function delete(string $id)
   {
     $model = model("EditorialsModel");
-    $editorial = $model->find($id);
-    $string = implode(',', $editorial->toRawArray());
-    $editorial = explode(',', $string);
-    $model->oldInfo = $editorial;
-    
-  
-    $model->deleteEditorial($id);
 
-    return redirect("editorials")->with("msg", [
-      "type" => "danger",
-      "body" => "La editorial fue eliminada"
-    ]);
+    try {
+      $model->deleteEditorial($id);
+    } catch (Exception $e) {
+      echo $e;
+    }
+
+    session()->setFlashdata("status", "Editorial fue Eliminada correctamente");
+    redirect("editorials")->with("status_icon", "success");
+    return;
   }
 }

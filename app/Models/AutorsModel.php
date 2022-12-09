@@ -48,6 +48,7 @@ class AutorsModel extends Model
     $model = model("auditoriaModel");
     $old = $this->oldInfo;
     if ($data["data"]["estado"] == 0) {
+     try {
       array_pop($old);
       $datos = [
         "tipo" => "DELETE",
@@ -56,50 +57,42 @@ class AutorsModel extends Model
         "old_info" => implode("|", $this->oldInfo),
         "new_info" => implode("|", $old)  . "|" . "0"
       ];
+     } catch (\Throwable $th) {
+      //throw $th;
+     }
     } else {
-      $datos = [
-        "id_editorial" => null,
-        "tipo" => "UPDATE",
-        "tabla" => "editoriales",
-        "id_user" => config("G3stor")->currentUserId,
-        "old_info" => implode("|", $this->oldInfo),
-        "new_info" => strval($data["id"][0]) . "|" . implode("|", $data["data"])
-      ];
+      try {
+        $datos = [
+          "tipo" => "UPDATE",
+          "tabla" => "autores",
+          "id_user" => config("G3stor")->currentUserId,
+          "old_info" => implode("|", $this->oldInfo),
+          "new_info" => strval($data["id"][0]) . "|" . implode("|", $data["data"])
+        ];
+      } catch (\Throwable $th) {
+        //throw $th;
+      }
     }
     $model->insert($datos);
   }
 
-
-
-
-  public function getAutors($state)
+  public function insertAutor($pn, $sn, $pa, $sa, $seu, $dir, $pais)
   {
-    return $this
-      ->select("id_autor, autores.primer_nombre,autores.segundo_nombre, autores.primer_apellido, autores.segundo_apellido, autores.seudonimo, autores.direccion, p.nombre AS pais, autores.estado")
-      ->join("paises as p", "p.id_pais = autores.id_pais")
-      ->where("autores.estado", $state)
-      ->orderBy("autores.primer_nombre");
+    $q = "CALL insertar_autor($pn, $sn,$pa,$sa,$seu,$dir,$pais)";
+    $query = $this->query($q);
+    return $query;
   }
 
-  public function getAutorsByName($name, $state = 1)
+  public function updateAutor($id, $pn, $sn, $pa, $sa, $seu, $dir, $pais, $est)
   {
-    return $this
-      ->select("id_autor, autores.primer_nombre,autores.segundo_nombre, autores.primer_apellido, autores.segundo_apellido, autores.seudonimo, autores.direccion, p.nombre AS pais, autores.estado")
-      ->join("paises as p", "p.id_pais = autores.id_pais")
-      ->like("autores.primer_nombre", $name, "after")
-      ->where("autores.estado", $state)
-      ->orderBy("autores.primer_nombre");
+    $q = "CALL actualizar_autor($id, $pn, $sn,$pa,$sa,$seu,$dir,$pais, $est)";
+    $query = $this->query($q);
+    return $query;
   }
 
   public function deleteAutor($id)
   {
-    return $this->update($id, ["estado" => 0]);
-  }
-
-  public function countAutors($state = 1)
-  {
-    $sql = 'SELECT contar_autores_activos(?)';
-    $res = $this->query($sql, $state)->getRow();
-    return get_object_vars($res);
+    $this->update($id, ["estado" => 0]);
+    return;
   }
 }

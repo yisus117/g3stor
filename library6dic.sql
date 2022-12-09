@@ -14,6 +14,44 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+
+-- Volcando estructura de base de datos para library
+CREATE DATABASE IF NOT EXISTS `library` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `library`;
+
+-- Volcando estructura para procedimiento library.actualizar_autor
+DELIMITER //
+CREATE PROCEDURE `actualizar_autor`(
+in id SMALLINT,
+in pn varchar(50),
+in sn varchar(50),
+in pa varchar(50),
+in sa varchar(50),
+in seu varchar(50),
+in dir varchar(50),
+in pais SMALLINT,
+in est smallint
+)
+BEGIN
+update autores set primer_nombre = pn, segundo_nombre = sn ,primer_apellido = pa , segundo_apellido = sa ,seudonimo = seu ,direccion = dir ,id_pais = pais, estado = est
+WHERE id_autor = id and estado != 0;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento library.actualizar_editorial
+DELIMITER //
+CREATE PROCEDURE `actualizar_editorial`(
+IN id SMALLINT,
+in nom varchar(50),
+in pais SMALLINT,
+IN est smallint
+)
+BEGIN
+update editoriales SET Nombre = nom, id_pais = pais, estado = est
+WHERE id_editorial = id and estado != 0;
+END//
+DELIMITER ;
+
 -- Volcando estructura para procedimiento library.actualizar_estudiante
 DELIMITER //
 CREATE PROCEDURE `actualizar_estudiante`(
@@ -35,7 +73,7 @@ IN act SMALLINT
 BEGIN
 update estudiantes 
 set primer_nombre = pn ,segundo_nombre = sn, primer_apellido = pa, segundo_apellido = sa, tipo_documento = td, documento = doc, sexo = sx, estado_civil = ec, direccion = dir, correo = cor, id_programa = pro, telefono = tel, activo = act
- WHERE id_estudiante = id;
+ WHERE id_estudiante = id and activo != 0;
 END//
 DELIMITER ;
 
@@ -51,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `auditoria` (
   `new_info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
--- Volcando datos para la tabla library.auditoria: ~94 rows (aproximadamente)
+-- Volcando datos para la tabla library.auditoria: ~91 rows (aproximadamente)
 INSERT INTO `auditoria` (`fecha_cambio`, `nombre_disparador`, `tipo_disparador`, `nivel_disparador`, `comando`, `tabla`, `old_info`, `new_info`) VALUES
 	('2022-11-13 23:45:14', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '19|magdalena sa|1|2', '19|magdalena sa|1|1'),
 	('2022-11-13 23:45:50', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '1|Campestre S.A|1|1', '1|Campestre S.A|2|1'),
@@ -146,7 +184,55 @@ INSERT INTO `auditoria` (`fecha_cambio`, `nombre_disparador`, `tipo_disparador`,
 	('2022-11-14 16:33:25', 'tg_insert_libros', 'AFTER', 'ROW', 'INSERT', 'libros', NULL, '8|A Song of Ice and Fire|2|1|500|1'),
 	('2022-12-03 23:13:55', 'tg_insert_libros', 'AFTER', 'ROW', 'INSERT', 'libros', NULL, '9|jesus|1|34|344|1'),
 	('2022-12-04 13:38:56', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '22|asdfasfasfasfasfsafdasfasfdasdasfasfdasfdasfdasfasfdsfdasfdsfdasfdsfasfdaasdfasfdsfdasfdsfdasfdsfdsfsfdasfdasfdasfdsfdasfdasfdasfdasfdasfdsafdasfdasfdasfdasfds|1|1'),
-	('2022-12-04 14:50:54', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '23|asdf|2|1');
+	('2022-12-04 14:50:54', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '23|asdf|2|1'),
+	('2022-12-07 16:54:17', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '23|asdf|2|1', '23|asdf|2|0'),
+	('2022-12-07 16:54:20', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '22|asdfasfasfasfasfsafdasfasfdasdasfasfdasfdasfdasfasfdsfdasfdsfdasfdsfasfdaasdfasfdsfdasfdsfdasfdsfdsfsfdasfdasfdasfdsfdasfdasfdasfdasfdasfdsafdasfdasfdasfdasfds|1|1', '22|asdfasfasfasfasfsafdasfasfdasdasfasfdasfdasfdasfasfdsfdasfdsfdasfdsfasfdaasdfasfdsfdasfdsfdasfdsfdsfsfdasfdasfdasfdsfdasfdasfdasfdasfdasfdsafdasfdasfdasfdasfds|1|0'),
+	('2022-12-07 16:54:49', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '1|Campestre S.A|1|1', '1|Campestre S.A|1|0'),
+	('2022-12-08 15:14:33', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '24|editorial sa|2|1'),
+	('2022-12-08 15:19:28', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '25|editorial sa|2|1'),
+	('2022-12-08 15:21:17', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '26|catedral del pacifico sur|2|1'),
+	('2022-12-08 15:22:52', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '9|cañaveral sa|1|1', '9|cañaveral sa|1|0'),
+	('2022-12-08 16:25:08', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '25|editorial sa|2|1', '25|actualizada|2|1'),
+	('2022-12-08 16:27:34', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '25|actualizada|2|1', '25|actualizada|2|1'),
+	('2022-12-08 16:30:43', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '25|actualizada|2|1', '25|actualizada|1|1'),
+	('2022-12-08 16:30:50', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '25|actualizada|1|1', '25|actualizada|2|1'),
+	('2022-12-08 16:32:22', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '27|camara de papel|1|1'),
+	('2022-12-08 16:47:01', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '22|asdfasfasfasfasfsafdasfasfdasdasfasfdasfdasfdasfasfdsfdasfdsfdasfdsfasfdaasdfasfdsfdasfdsfdasfdsfdsfsfdasfdasfdasfdsfdasfdasfdasfdasfdasfdsafdasfdasfdasfdasfds|1|0', '22|asdf|1|0'),
+	('2022-12-08 16:56:15', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '27|camara de papel|1|1', '27|cama|1|1'),
+	('2022-12-08 16:57:11', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '27|cama|1|1', '27|cama|2|1'),
+	('2022-12-08 16:59:31', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '27|cama|2|1', '27|cama|2|0'),
+	('2022-12-08 19:04:00', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '28|marianela|1|1'),
+	('2022-12-08 19:17:42', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '29|del norte|1|1'),
+	('2022-12-08 19:22:11', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '29|del norte|1|1', '29|del norte|1|1'),
+	('2022-12-08 19:22:27', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '29|del norte|1|1', '29|del norte|1|1'),
+	('2022-12-08 20:49:47', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '29|del norte|1|1', '29|del norte|1|0'),
+	('2022-12-08 20:49:56', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '26|catedral del pacifico sur|2|1', '26|catedral del pacifico sur|2|0'),
+	('2022-12-08 20:50:03', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '25|actualizada|2|1', '25|actualizada|2|0'),
+	('2022-12-08 20:53:21', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '24|editorial sa|2|1', '24|editorial sa|2|0'),
+	('2022-12-08 20:53:27', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '8|Educar Editores|1|1', '8|Educar Editores|1|0'),
+	('2022-12-08 20:55:39', 'tg_delete_editoriales', 'AFTER', 'ROW', 'DELETE', 'editoriales', '12|Editorial Planeta|2|1', '12|Editorial Planeta|2|0'),
+	('2022-12-08 20:55:57', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '30|jaia|2|1'),
+	('2022-12-08 20:56:11', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '30|jaia|2|1', '30|jaia|1|1'),
+	('2022-12-08 20:56:18', 'tg_update_editoriales', 'AFTER', 'ROW', 'UPDATE', 'editoriales', '30|jaia|1|1', '30|jaia|2|1'),
+	('2022-12-08 21:19:39', 'tg_insert_editoriales', 'AFTER', 'ROW', 'INSERT', 'editoriales', NULL, '31|de la sabana|1|1'),
+	('2022-12-08 22:12:06', 'tg_insert_autores', 'AFTER', 'ROW', 'INSERT', 'autores', NULL, '11|jesus||david||je|calle 54|1|1'),
+	('2022-12-08 22:18:59', 'tg_update_autores', 'AFTER', 'ROW', 'UPDATE', 'autores', '11|jesus||david||je|calle 54|1|1', '11|jesus|manuel|david|deivid|jes|calle 54 %|1|1'),
+	('2022-12-08 23:12:49', 'tg_insert_autores', 'AFTER', 'ROW', 'INSERT', 'autores', NULL, '12|asdf||asdf||asdf|asdfasdf|1|1'),
+	('2022-12-08 23:26:21', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '12|asdf||asdf||asdf|asdfasdf|1|1', '12|asdf||asdf||asdf|asdfasdf|1|0'),
+	('2022-12-08 23:28:17', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '11|jesus|manuel|david|deivid|jes|calle 54 %|1|1', '11|jesus|manuel|david|deivid|jes|calle 54 %|1|0'),
+	('2022-12-08 23:29:25', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '10|Rick ||Riordan |||usa|1|1', '10|Rick ||Riordan |||usa|1|0'),
+	('2022-12-08 23:29:43', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '5|Paula ||Hawkins |||usa|2|1', '5|Paula ||Hawkins |||usa|2|0'),
+	('2022-12-08 23:32:21', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '3|Dan ||Brown |||usa|1|1', '3|Dan ||Brown |||usa|1|0'),
+	('2022-12-08 23:33:33', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '1|George |RR|Martin|||usa|2|1', '1|George |RR|Martin|||usa|2|0'),
+	('2022-12-08 23:35:55', 'tg_update_autores', 'AFTER', 'ROW', 'UPDATE', 'autores', '12|asdf||asdf||asdf|asdfasdf|1|0', '12|asdf||asdf||asdf|asdfasdf|1|1'),
+	('2022-12-08 23:35:56', 'tg_update_autores', 'AFTER', 'ROW', 'UPDATE', 'autores', '11|jesus|manuel|david|deivid|jes|calle 54 %|1|0', '11|jesus|manuel|david|deivid|jes|calle 54 %|1|1'),
+	('2022-12-08 23:35:56', 'tg_update_autores', 'AFTER', 'ROW', 'UPDATE', 'autores', '10|Rick ||Riordan |||usa|1|0', '10|Rick ||Riordan |||usa|1|1'),
+	('2022-12-08 23:35:57', 'tg_update_autores', 'AFTER', 'ROW', 'UPDATE', 'autores', '5|Paula ||Hawkins |||usa|2|0', '5|Paula ||Hawkins |||usa|2|1'),
+	('2022-12-08 23:35:58', 'tg_update_autores', 'AFTER', 'ROW', 'UPDATE', 'autores', '3|Dan ||Brown |||usa|1|0', '3|Dan ||Brown |||usa|1|1'),
+	('2022-12-08 23:35:59', 'tg_update_autores', 'AFTER', 'ROW', 'UPDATE', 'autores', '1|George |RR|Martin|||usa|2|0', '1|George |RR|Martin|||usa|2|1'),
+	('2022-12-08 23:36:06', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '12|asdf||asdf||asdf|asdfasdf|1|1', '12|asdf||asdf||asdf|asdfasdf|1|0'),
+	('2022-12-08 23:36:16', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '3|Dan ||Brown |||usa|1|1', '3|Dan ||Brown |||usa|1|0'),
+	('2022-12-08 23:37:25', 'tg_delete_autores', 'AFTER', 'ROW', 'DELETE', 'autores', '10|Rick ||Riordan |||usa|1|1', '10|Rick ||Riordan |||usa|1|0');
 
 -- Volcando estructura para tabla library.auditoria_tipo2
 CREATE TABLE IF NOT EXISTS `auditoria_tipo2` (
@@ -158,9 +244,9 @@ CREATE TABLE IF NOT EXISTS `auditoria_tipo2` (
   `old_info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci,
   `new_info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   PRIMARY KEY (`id_auditoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
--- Volcando datos para la tabla library.auditoria_tipo2: ~35 rows (aproximadamente)
+-- Volcando datos para la tabla library.auditoria_tipo2: ~32 rows (aproximadamente)
 INSERT INTO `auditoria_tipo2` (`id_auditoria`, `fecha_cambio`, `tipo`, `tabla`, `id_user`, `old_info`, `new_info`) VALUES
 	(39, '2022-11-14 13:34:26', 'UPDATE', 'editoriales', 235, '3|ANDRES|asdf|GUZMAN|asdf||soledad|1|1', '3|ANDRES||GUZMAN|||soledad|1|1'),
 	(40, '2022-11-14 13:34:44', 'UPDATE', 'editoriales', 235, '3|ANDRES||GUZMAN|||soledad|1|1', '3|ANDRES||GUZMAN||andreg|soledad|1|1'),
@@ -196,7 +282,13 @@ INSERT INTO `auditoria_tipo2` (`id_auditoria`, `fecha_cambio`, `tipo`, `tabla`, 
 	(70, '2022-11-14 16:33:25', 'INSERT', 'libros', 235, NULL, '8|A Song of Ice and Fire|2|1|500|1'),
 	(71, '2022-12-03 23:13:55', 'INSERT', 'libros', 235, NULL, '9|jesus|1|34|344|1'),
 	(72, '2022-12-04 13:38:56', 'INSERT', 'editoriales', 235, NULL, '22|asdfasfasfasfasfsafdasfasfdasdasfasfdasfdasfdasfasfdsfdasfdsfdasfdsfasfdaasdfasfdsfdasfdsfdasfdsfdsfsfdasfdasfdasfdsfdasfdasfdasfdasfdasfdsafdasfdasfdasfdasfds|1|1'),
-	(73, '2022-12-04 14:50:54', 'INSERT', 'editoriales', 235, NULL, '23|asdf|2|1');
+	(73, '2022-12-04 14:50:54', 'INSERT', 'editoriales', 235, NULL, '23|asdf|2|1'),
+	(74, '2022-12-07 16:54:17', 'DELETE', 'editoriales', 235, '23|asdf|2|1', '23|asdf|2|0'),
+	(75, '2022-12-07 16:54:20', 'DELETE', 'editoriales', 235, '22|asdfasfasfasfasfsafdasfasfdasdasfasfdasfdasfdasfasfdsfdasfdsfdasfdsfasfdaasdfasfdsfdasfdsfdasfdsfdsfsfdasfdasfdasfdsfdasfdasfdasfdasfdasfdsafdasfdasfdasfdasfds|1|1', '22|asdfasfasfasfasfsafdasfasfdasdasfasfdasfdasfdasfasfdsfdasfdsfdasfdsfasfdaasdfasfdsfdasfdsfdasfdsfdsfsfdasfdasfdasfdsfdasfdasfdasfdasfdasfdsafdasfdasfdasfdasfds|1|0'),
+	(76, '2022-12-07 16:54:49', 'DELETE', 'editoriales', 235, '1|Campestre S.A|1|1', '1|Campestre S.A|1|0'),
+	(77, '2022-12-08 15:22:52', 'DELETE', 'editoriales', 235, '9|cañaveral sa|1|1', '9|cañaveral sa|1|0'),
+	(78, '2022-12-08 16:59:31', 'DELETE', 'editoriales', 235, '27|cama|2|1', '27|cama|2|0'),
+	(79, '2022-12-08 23:12:49', 'INSERT', 'autores', 235, NULL, '12|asdf||asdf||asdf|asdfasdf|1|1');
 
 -- Volcando estructura para tabla library.autores
 CREATE TABLE IF NOT EXISTS `autores` (
@@ -206,19 +298,21 @@ CREATE TABLE IF NOT EXISTS `autores` (
   `primer_apellido` varchar(50) NOT NULL,
   `segundo_apellido` varchar(50) DEFAULT NULL,
   `seudonimo` varchar(200) DEFAULT NULL,
-  `direccion` varchar(200) NOT NULL,
+  `direccion` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `id_pais` smallint NOT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_autor`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 -- Volcando datos para la tabla library.autores: ~5 rows (aproximadamente)
 INSERT INTO `autores` (`id_autor`, `primer_nombre`, `segundo_nombre`, `primer_apellido`, `segundo_apellido`, `seudonimo`, `direccion`, `id_pais`, `estado`) VALUES
 	(1, 'George ', 'RR', 'Martin', '', '', 'usa', 2, 1),
 	(2, 'maria', '', 'alvarez', '', 'alva', 'barranquilla', 2, 2),
-	(3, 'Dan ', '', 'Brown ', '', '', 'usa', 1, 1),
+	(3, 'Dan ', '', 'Brown ', '', '', 'usa', 1, 0),
 	(5, 'Paula ', '', 'Hawkins ', '', '', 'usa', 2, 1),
-	(10, 'Rick ', '', 'Riordan ', '', '', 'usa', 1, 1);
+	(10, 'Rick ', '', 'Riordan ', '', '', 'usa', 1, 0),
+	(11, 'jesus', 'manuel', 'david', 'deivid', 'jes', 'calle 54 %', 1, 1),
+	(12, 'asdf', '', 'asdf', '', 'asdf', 'asdfasdf', 1, 0);
 
 -- Volcando estructura para tabla library.autores_libros
 CREATE TABLE IF NOT EXISTS `autores_libros` (
@@ -289,21 +383,25 @@ DELIMITER ;
 
 -- Volcando estructura para función library.contar_estudiantes_activos
 DELIMITER //
-CREATE FUNCTION `contar_estudiantes_activos`(estado SMALLINT) RETURNS int unsigned
+CREATE FUNCTION `contar_estudiantes_activos`(
+	`estado` SMALLINT
+) RETURNS int unsigned
     READS SQL DATA
 BEGIN
 DECLARE total INT UNSIGNED;
 SET total = (
 	SELECT COUNT(*) 
   FROM estudiantes 
-  WHERE estudiantes.activo = activo);
+  WHERE estudiantes.activo = estado);
   RETURN total;
 END//
 DELIMITER ;
 
 -- Volcando estructura para función library.contar_libros_activos
 DELIMITER //
-CREATE FUNCTION `contar_libros_activos`(activo SMALLINT) RETURNS int unsigned
+CREATE FUNCTION `contar_libros_activos`(
+	`activo` SMALLINT
+) RETURNS int unsigned
     READS SQL DATA
 BEGIN
 DECLARE total INT UNSIGNED;
@@ -318,30 +416,38 @@ DELIMITER ;
 -- Volcando estructura para tabla library.editoriales
 CREATE TABLE IF NOT EXISTS `editoriales` (
   `id_editorial` smallint NOT NULL AUTO_INCREMENT,
-  `Nombre` varchar(200) NOT NULL,
+  `Nombre` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_pais` smallint NOT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_editorial`),
   KEY `editoriales_paises` (`id_pais`),
   CONSTRAINT `editoriales_paises` FOREIGN KEY (`id_pais`) REFERENCES `paises` (`id_pais`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla library.editoriales: ~14 rows (aproximadamente)
+-- Volcando datos para la tabla library.editoriales: ~12 rows (aproximadamente)
 INSERT INTO `editoriales` (`id_editorial`, `Nombre`, `id_pais`, `estado`) VALUES
-	(1, 'Campestre S.A', 1, 1),
+	(1, 'Campestre S.A', 1, 0),
 	(2, 'Panamericana Editorial', 1, 1),
 	(4, 'magdalena', 1, 1),
 	(6, 'litoral', 2, 1),
 	(7, 'Editorial Gato Malo', 2, 1),
-	(8, 'Educar Editores', 1, 1),
-	(9, 'cañaveral sa', 1, 1),
+	(8, 'Educar Editores', 1, 0),
+	(9, 'cañaveral sa', 1, 0),
 	(11, 'master books', 1, 2),
-	(12, 'Editorial Planeta', 2, 1),
+	(12, 'Editorial Planeta', 2, 0),
 	(13, 'Carvajal', 1, 1),
 	(18, 'editorial del sur', 1, 0),
 	(21, 'primavera', 2, 1),
-	(22, 'asdfasfasfasfasfsafdasfasfdasdasfasfdasfdasfdasfasfdsfdasfdsfdasfdsfasfdaasdfasfdsfdasfdsfdasfdsfdsfsfdasfdasfdasfdsfdasfdasfdasfdasfdasfdsafdasfdasfdasfdasfds', 1, 1),
-	(23, 'asdf', 2, 1);
+	(22, 'asdf', 1, 0),
+	(23, 'asdf', 2, 0),
+	(24, 'editorial sa', 2, 0),
+	(25, 'actualizada', 2, 0),
+	(26, 'catedral del pacifico sur', 2, 0),
+	(27, 'cama', 2, 0),
+	(28, 'marianela', 1, 1),
+	(29, 'del norte', 1, 0),
+	(30, 'jaia', 2, 1),
+	(31, 'de la sabana', 1, 1);
 
 -- Volcando estructura para tabla library.estudiantes
 CREATE TABLE IF NOT EXISTS `estudiantes` (
@@ -370,15 +476,48 @@ CREATE TABLE IF NOT EXISTS `estudiantes` (
   CONSTRAINT `estudiantes_parametrosdet` FOREIGN KEY (`tipo_documento`) REFERENCES `parametros_det` (`id_dparam`),
   CONSTRAINT `estudiantes_programas` FOREIGN KEY (`id_programa`) REFERENCES `programas` (`id_programa`),
   CONSTRAINT `sexo_parametrosdet` FOREIGN KEY (`sexo`) REFERENCES `parametros_det` (`id_dparam`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
 -- Volcando datos para la tabla library.estudiantes: ~5 rows (aproximadamente)
 INSERT INTO `estudiantes` (`id_estudiante`, `tipo_documento`, `documento`, `primer_nombre`, `segundo_nombre`, `primer_apellido`, `segundo_apellido`, `sexo`, `estado_civil`, `direccion`, `correo`, `id_programa`, `telefono`, `activo`) VALUES
-	(3, 1, '1140882431', 'yisus cel', '', 'Messi', 'Ronaldo', 6, 10, 'Calle 45 # 45 - 79', 'jesus@gmail.com', 1, '3016782082', 1),
-	(4, 1, '555555', 'Alejandra', '', 'Becerra', '', 7, 10, 'calle 34', 'maria@gmail.com', 1, '53423443', 1),
+	(3, 1, '1140882431', 'yisu', '', 'Messi', 'Ronaldo', 6, 10, 'Calle 45 # 45 - 79', 'jesus@gmail.com', 1, '3016782082', 0),
+	(4, 1, '555555', 'Alejandra', 'maria', 'Becerra', 'gomez', 7, 10, 'calle 34', 'maria@gmail.com', 1, '53423443', 1),
 	(19, 1, '888888888', 'maria', '', 'camila', '', 7, 10, 'calle 34', 'madria@gmail.com', 1, '53423443', 1),
-	(20, 5, '1402', 'juan', 'david', 'perez', 'hernandez', 6, 9, 'calle 34', 'juan@gmail.com', 1, '31025687445', 1),
-	(21, 1, '14525878525', 'adriana', '', 'gutierrez', 'marquez', 7, 9, 'calle 56 # 45 - 67', 'adriana@gmail.com', 1, '3536898', 2);
+	(20, 2, '1402', 'juan f', 'david', 'perez', 'hernandez', 6, 9, 'calle 34', 'juan@gmail.com', 1, '31025687445', 0),
+	(21, 1, '14525878525', 'adriana', '', 'gutierrez', 'marquez', 7, 9, 'calle 56 # 45 - 67', 'adriana@gmail.com', 1, '3536898', 1),
+	(23, 2, '2535487', 'manuel ddd', '', 'guerrero', '', 6, 10, 'call 34 # 6a - 54', 'manuel@gmail.com', 1, '3524587', 0),
+	(24, 2, '1140882431d', 'juanito', '', 'carvajal', '', 7, 9, 'dsaf', 'juanito@gmail.com', 1, 'asdfsdf', 2),
+	(25, 2, 'asdfff', 'mirian', '', 'guxman', '', 6, 10, 'asdfdf', 'mirian@gmail.com', 1, 'asdfsadf', 0),
+	(26, 1, 'asdfasdfasdfd', 'asdf', 'asdf', 'asdf', 'asdf', 6, 9, 'asdf', 'asd@gmail.com', 1, 'asdfasdf', 1);
+
+-- Volcando estructura para procedimiento library.insertar_autor
+DELIMITER //
+CREATE PROCEDURE `insertar_autor`(
+in pn varchar(50),
+in sn varchar(50),
+in pa varchar(50),
+in sa varchar(50),
+in seu varchar(50),
+in dir varchar(50),
+in pais smallint
+)
+BEGIN
+insert into autores(primer_nombre, segundo_nombre,primer_apellido, segundo_apellido,seudonimo,direccion,id_pais)
+ values(pn,sn,pa,sa,seu,dir,pais);
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento library.insertar_editorial
+DELIMITER //
+CREATE PROCEDURE `insertar_editorial`(
+in nom varchar(50),
+in pais smallint
+)
+BEGIN
+insert into editoriales(Nombre, id_pais)
+ values(nom,pais);
+END//
+DELIMITER ;
 
 -- Volcando estructura para procedimiento library.insertar_estudiante
 DELIMITER //
@@ -415,7 +554,7 @@ CREATE TABLE IF NOT EXISTS `libros` (
   CONSTRAINT `libros_editoriales` FOREIGN KEY (`id_editorial`) REFERENCES `editoriales` (`id_editorial`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla library.libros: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla library.libros: ~5 rows (aproximadamente)
 INSERT INTO `libros` (`id_libros`, `nombre`, `id_editorial`, `edicion`, `paginas`, `activo`) VALUES
 	(4, 'Harry', 21, 1, 1000, 0),
 	(5, 'Aprende a programar', 1, 1, 200, 1),
@@ -497,7 +636,7 @@ CREATE TABLE IF NOT EXISTS `parametros_enc` (
   PRIMARY KEY (`id_parametro`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla library.parametros_enc: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla library.parametros_enc: ~2 rows (aproximadamente)
 INSERT INTO `parametros_enc` (`id_parametro`, `Nombre`, `abreviado`, `estado`) VALUES
 	(1, 'Tipo de documento', 'TD', 1),
 	(2, 'Sexo', 'SX', 1),
@@ -532,6 +671,29 @@ BEGIN
       VALUES (disparador, tipo, nivel, comando, tabla, oldInfo, newInfo);
 END//
 DELIMITER ;
+
+-- Volcando estructura para vista library.v_autores
+-- Creando tabla temporal para superar errores de dependencia de VIEW
+CREATE TABLE `v_autores` (
+	`id_autor` SMALLINT(5) NOT NULL,
+	`primer_nombre` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
+	`segundo_nombre` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
+	`primer_apellido` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
+	`segundo_apellido` VARCHAR(50) NULL COLLATE 'latin1_swedish_ci',
+	`seudonimo` VARCHAR(200) NULL COLLATE 'latin1_swedish_ci',
+	`direccion` VARCHAR(200) NULL COLLATE 'latin1_swedish_ci',
+	`pais` VARCHAR(200) NOT NULL COLLATE 'latin1_swedish_ci',
+	`estado` TINYINT(1) NOT NULL
+) ENGINE=MyISAM;
+
+-- Volcando estructura para vista library.v_editoriales
+-- Creando tabla temporal para superar errores de dependencia de VIEW
+CREATE TABLE `v_editoriales` (
+	`id_editorial` SMALLINT(5) NOT NULL,
+	`Nombre` VARCHAR(100) NOT NULL COLLATE 'latin1_swedish_ci',
+	`pais` VARCHAR(200) NOT NULL COLLATE 'latin1_swedish_ci',
+	`estado` TINYINT(1) NOT NULL
+) ENGINE=MyISAM;
 
 -- Volcando estructura para vista library.v_estado_civil
 -- Creando tabla temporal para superar errores de dependencia de VIEW
@@ -678,6 +840,16 @@ CREATE TRIGGER `tg_update_libros` AFTER UPDATE ON `libros` FOR EACH ROW BEGIN
     END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Volcando estructura para vista library.v_autores
+-- Eliminando tabla temporal y crear estructura final de VIEW
+DROP TABLE IF EXISTS `v_autores`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_autores` AS select `a`.`id_autor` AS `id_autor`,`a`.`primer_nombre` AS `primer_nombre`,`a`.`segundo_nombre` AS `segundo_nombre`,`a`.`primer_apellido` AS `primer_apellido`,`a`.`segundo_apellido` AS `segundo_apellido`,`a`.`seudonimo` AS `seudonimo`,`a`.`direccion` AS `direccion`,`p`.`nombre` AS `pais`,`a`.`estado` AS `estado` from (`autores` `a` join `paises` `p` on((`p`.`id_pais` = `a`.`id_pais`)));
+
+-- Volcando estructura para vista library.v_editoriales
+-- Eliminando tabla temporal y crear estructura final de VIEW
+DROP TABLE IF EXISTS `v_editoriales`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_editoriales` AS select `e`.`id_editorial` AS `id_editorial`,`e`.`Nombre` AS `Nombre`,`p`.`nombre` AS `pais`,`e`.`estado` AS `estado` from (`editoriales` `e` join `paises` `p` on((`p`.`id_pais` = `e`.`id_pais`)));
 
 -- Volcando estructura para vista library.v_estado_civil
 -- Eliminando tabla temporal y crear estructura final de VIEW

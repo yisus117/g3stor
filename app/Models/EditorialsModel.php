@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Entities\Editorial;
 use CodeIgniter\Model;
+use Exception;
 
 class EditorialsModel extends Model
 {
@@ -15,7 +16,7 @@ class EditorialsModel extends Model
   protected $returnType       = Editorial::class;
   protected $useSoftDeletes   = false;
 
-  protected $allowedFields    = ["nombre", "id_pais", "estado"];
+  protected $allowedFields    = ["Nombre", "id_pais", "estado"];
 
   // Dates
   protected $useTimestamps = false;
@@ -27,22 +28,7 @@ class EditorialsModel extends Model
   protected $afterInsert = ["afterInsert"];
   protected $afterUpdate = ["afterUpdated"];
 
-  public $oldInfo; 
-
-
-  protected function afterInsert($data)
-  {
-    $model = model("auditoriaModel");
-    $datos = [
-      "id_editorial" => null,
-      "tipo" => "INSERT",
-      "tabla" => "editoriales",
-      "id_user" => config("G3stor")->currentUserId,
-      "old_info" => null,
-      "new_info" => strval($data["id"]) . "|" . implode("|", $data["data"]) . "|" . "1"
-    ];
-    $model->insert($datos);
-  }
+  public $oldInfo;
 
   protected function afterUpdated($data)
   {
@@ -51,7 +37,6 @@ class EditorialsModel extends Model
     if ($data["data"]["estado"] == 0) {
       array_pop($old);
       $datos = [
-        "id_editorial" => null,
         "tipo" => "DELETE",
         "tabla" => "editoriales",
         "id_user" => config("G3stor")->currentUserId,
@@ -72,43 +57,24 @@ class EditorialsModel extends Model
   }
 
 
-  public function getEditorials($state)
+  public function insertEditorial($name, $country)
   {
-    return $this
-      ->select("id_editorial,editoriales.id_pais, editoriales.nombre, p.nombre AS pais, editoriales.estado")
-      ->join("paises as p", "p.id_pais = editoriales.id_pais")
-      ->where("editoriales.estado", $state)
-      ->orderBy("editoriales.nombre");
+    $q = "CALL insertar_editorial('$name', $country)";
+    $query = $this->query($q);
+    return $query;
   }
 
-
-  public function getEditorialByName($name, $state = 1)
+  public function updateEditorial($id,$name, $country, $state)
   {
-    return $this
-      ->select("id_editorial, editoriales.nombre, p.nombre AS pais, editoriales.estado")
-      ->join("paises as p", "p.id_pais = editoriales.id_pais")
-      ->like("editoriales.nombre", $name, "after")
-      ->where("editoriales.estado", $state)
-      ->orderBy("editoriales.nombre");
+    $q = "CALL actualizar_editorial($id,'$name', $country, $state)";
+    $query = $this->query($q);
+    return $query;
   }
-
 
   public function deleteEditorial($id)
   {
-    return $this->update($id, ["estado" => 0]);
+    $this->update($id, ["estado" => 0]);
+    return;
   }
 
-
-  public function countEditorials($state = 1)
-  {
-    $sql = 'SELECT contar_editoriales_activos(?)';
-    $res = $this->query($sql, $state)->getRow();
-    return get_object_vars($res);
-  }
-
-
-  public function getEditorialBy(string $column, string $value)
-  {
-    return $this->where($column, $value)->first();
-  }
 }

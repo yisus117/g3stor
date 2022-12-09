@@ -29,15 +29,15 @@ Editar estudiante: <?= $student->primer_nombre ?>
               <h3 class="mb-4 fw-normal">Editar estudiante: "<?= $student->primer_nombre ?> <?= $student->primer_apellido  ?>"</h3>
               <form class="requires-validation" novalidate action="<?= base_url(route_to("students_update")) ?>" method="POST">
 
-              <div class="row">
-              <div class="col-md-6 mb-4">
+                <div class="row">
+                  <div class="col-md-6 mb-4">
                     <label class="label fs-6">ID de registro</label>
-                    <input readonly  class="form-control mt-1 " type="text" name="id_student" value="<?= old("id_student") ?? $student->id_estudiante ?>" required>
+                    <input readonly class="form-control mt-1 " type="text" name="id_student" value="<?= old("id_student") ?? $student->id_estudiante ?>" required>
                   </div>
 
                   <div class="col-md-6 mb-4">
                     <label class="label fs-6"># documento:</label>
-                    <input readonly  class="form-control mt-1 " type="text" name="document" value="<?= old("document") ?? $student->documento ?>" required>
+                    <input readonly class="form-control mt-1 " type="text" name="document" value="<?= old("document") ?? $student->documento ?>" required>
                     <div class="invalid-feedback">Este campo es obligatorio</div>
                     <small class="text-danger"><?= session("errors.document") ?></small>
 
@@ -45,7 +45,7 @@ Editar estudiante: <?= $student->primer_nombre ?>
 
                 </div>
 
-              <input type="hidden" class="form-control mt-1" name="id_student" value="<?= $student->id_estudiante ?>" required>
+                <input type="hidden" class="form-control mt-1" name="id_student" value="<?= $student->id_estudiante ?>" required>
 
                 <div class="row">
                   <div class="col-md-6 mb-4">
@@ -115,7 +115,7 @@ Editar estudiante: <?= $student->primer_nombre ?>
                 </div>
 
                 <div class="row">
-                 
+
 
                   <div class="col-md-6  mb-4">
                     <label class="label req fs-6">Genero:</label>
@@ -151,7 +151,7 @@ Editar estudiante: <?= $student->primer_nombre ?>
                 <div class="row">
 
 
-                <div class="col-md-6 mb-4">
+                  <div class="col-md-6 mb-4">
                     <label class="label req fs-6">Correo Electrónico:</label>
                     <input class="form-control mt-1 " type="email" name="email" value="<?= old("email") ?? $student->correo ?>" placeholder="Ingrese el correo electrónico" required style="background-color: <?= config("G3stor")->secondColor ?>;">
                     <div class="invalid-feedback">Ingresa un correo válido</div>
@@ -172,7 +172,7 @@ Editar estudiante: <?= $student->primer_nombre ?>
 
                 <div class="row">
 
-                
+
 
                   <div class="col-md-6 mb-4">
                     <label class="label req fs-6">Dirección de residencia:</label>

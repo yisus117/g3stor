@@ -25,23 +25,34 @@ class VStudentsModel extends Model
 
   public function getStudents($state)
   {
-    return $this->select("*")->where("activo", $state);
+    return $this->select("*")->where("activo", $state)
+    ->orderBy("v_estudiantes.id_estudiante", "DESC");
   }
 
   public function countStudents($state = 1)
   {
     $sql = 'SELECT contar_estudiantes_activos(?)';
     $res = $this->query($sql, $state)->getRow();
-    return get_object_vars($res);
+    $temp =  get_object_vars($res);
+    return $temp["contar_estudiantes_activos(1)"];
   }
 
+  public function getStudentsByName($field, $search, $state)
+  {
+    return $this
+      ->select("*")
+      ->like("v_estudiantes.$field", $search, "after")
+      ->where("v_estudiantes.activo", $state)
+      ->orderBy("v_estudiantes.id_estudiante", "DESC");
+  }
+
+  
   public function getFields()
   {
     try {
       $q = "CALL obtener_nombre_campos('v_estudiantes')";
       $query = $this->query($q)->getResult();
       array_shift($query);
-    
     } catch (Exception $e) {
       echo $e;
     }
@@ -49,18 +60,8 @@ class VStudentsModel extends Model
     return array_filter(
       array_column($query, "COLUMN_NAME"),
       function ($a) {
-        return (!strpos($a, "abv")) ;
+        return (!strpos($a, "abv"));
       }
     );
-  
-
-  }
-  public function getStudentsByName($field,$search, $state)
-  {
-    return $this
-    ->select("*")
-      ->like("v_estudiantes.$field", $search, "after")
-      ->where("v_estudiantes.activo", $state)
-      ->orderBy("v_estudiantes.primer_nombre");
   }
 }
