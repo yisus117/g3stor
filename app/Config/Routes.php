@@ -37,13 +37,13 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 // $routes->group("/", ["namespace" => "App\Controllers\Admin", "filter" => "auth:admin"], function($routes){
-$routes->group("/", ["namespace" => "App\Controllers\Home"], function ($routes) {
+$routes->group("/", ["namespace" => "App\Controllers\Home", "filter" => "auth:user,admin,master"], function ($routes) {
     $routes->get("", "Dashboard::index", ["as" => "home"]);
 });
 
 
 
-$routes->group("libros", ["namespace" => "App\Controllers\Book"], function ($routes) {
+$routes->group("libros", ["namespace" => "App\Controllers\Book", "filter" => "auth:user,admin,master"], function ($routes) {
     $routes->get("", "Books::index", ["as" => "books"]);
 
 
@@ -84,16 +84,6 @@ $routes->group("libros", ["namespace" => "App\Controllers\Book"], function ($rou
 
 
 
-    // ----- Categories -----
-
-    // $routes->get("categorias", "Categories::index", ["as" => "categories"]);
-    // $routes->get("categorias/crear", "Categories::create", ["as" => "categories_create"]);
-    // $routes->post("categorias/guardar", "Categories::store", ["as" => "categories_store"]);
-
-    // $routes->get("categorias/editar/(:any)", "Categories::edit/$1", ["as" => "categories_edit"]);
-    // $routes->post("categorias/actualizar", "Categories::update", ["as" => "categories_update"]);
-
-    // $routes->get("categorias/eliminar/(:any)", "Categories::delete/$1", ["as" => "categories_delete"]);
 });
 
 $routes->group("auth", ["namespace" => "App\Controllers\Auth"], function ($routes) {
@@ -104,8 +94,15 @@ $routes->group("auth", ["namespace" => "App\Controllers\Auth"], function ($route
     $routes->get("logout", "Login::signout", ["as" => "signout"]);
 });
 
+$routes->group("auth/registrar", ["namespace" => "App\Controllers\Auth", "filter" => "master"], function ($routes) {
+    $routes->get("", "Register::index", ["as" => "register"]);
+    $routes->post("store", "Register::store");
+   
+});
 
-$routes->group("estudiantes", ["namespace" => "App\Controllers"], function ($routes) {
+
+
+$routes->group("estudiantes", ["namespace" => "App\Controllers", "filter" => "auth:user,admin,master"], function ($routes) {
     // $routes->get("registro", "Register::index", ["as" => "register"]);
     // $routes->post("store", "Register::store");
     $routes->get("", "Students::index", ["as" => "students"]);
@@ -116,6 +113,21 @@ $routes->group("estudiantes", ["namespace" => "App\Controllers"], function ($rou
     $routes->post("actualizar", "Students::update", ["as" => "students_update"]);
 
     $routes->get("eliminar/(:num)", "Students::delete/$1", ["as" => "students_delete"]);
+});
+
+
+
+$routes->group("prestamos", ["namespace" => "App\Controllers\Lend", "filter" => "auth:user,admin,master"], function ($routes) {
+    // $routes->get("registro", "Register::index", ["as" => "register"]);
+    // $routes->post("store", "Register::store");
+    $routes->get("", "Lend::index", ["as" => "lend"]);
+    $routes->get("agregar", "Lend::create", ["as" => "lend_create"]);
+    $routes->post("agregar/guardar", "Lend::store", ["as" => "lend_store"]);
+
+    $routes->get("editar/(:any)", "Lend::edit/$1", ["as" => "lend_edit"]);
+    $routes->post("actualizar", "Lend::update", ["as" => "lend_update"]);
+
+    $routes->get("eliminar/(:num)", "Lend::delete/$1", ["as" => "lend_delete"]);
 });
 
 

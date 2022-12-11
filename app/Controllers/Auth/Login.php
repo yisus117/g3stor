@@ -9,8 +9,8 @@ class Login extends BaseController
 {
   public function index()
   {
-    if(!session()->is_logged){
-      return view("Auth/Login");
+    if (!session()->is_logged) {
+      return view("auth/login");
     }
 
     return redirect()->route("home");
@@ -25,23 +25,24 @@ class Login extends BaseController
       return redirect()->back()->with("errors", $this->validator->getErrors())->withInput();
     }
 
-    // $email = trim($this->request->getVar("email"));
-    // $password = trim($this->request->getVar("password"));
+    $email = trim($this->request->getVar("email"));
+    $password = trim($this->request->getVar("password"));
 
-    // $model = model("UsersModel");
-    // if(!$user = $model->getUserBy("email", $email)) {
-    //   return redirect()->back()->with("msg", [
-    //     "type" => "is-danger",
-    //     "body" => "Este usuario no se encuentra registrado"
-    //   ]);
-    // }
+    $model = model("UsersModel");
+    if (!$user = $model->getUserBy("correo", $email)) {
+      session()->setFlashdata("status_text", "El correo ingresado no se encuentra registrado");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
+    }
 
-    // if(!password_verify($password, $user->password)){
-    //   return redirect()->back()->with("msg", [
-    //     "type" => "is-danger",
-    //     "body" => "Credenciales invalidas"
-    //   ]);
-    // }
+
+
+    // if(password_verify($password, $user->contrasena)){
+    if (!$password == $user->contrasena) {
+      session()->setFlashdata("status_text", "La contraseña es incorrecta");
+      return redirect()->back()->withInput()->with("status_icon", "error")
+        ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
+    }
 
     session()->set([
       "id_user" => $this->request->getVar("email"),
@@ -49,15 +50,12 @@ class Login extends BaseController
       "is_logged" => true
     ]);
 
-    return redirect()->route("home")->with("msg", [
-      "type" => "is-success",
-      "body" => "Bienvendo" 
-    ]);
-
-
+    session()->setFlashdata("status", "Bienvenido nuevamente");
+    return redirect("home")->with("status_icon", "success");
   }
 
-  public function signout(){
+  public function signout()
+  {
     session()->destroy();
     return redirect()->route("login");
   }

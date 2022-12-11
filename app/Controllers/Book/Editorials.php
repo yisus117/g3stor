@@ -110,7 +110,7 @@ class Editorials extends BaseController
     $editorial = $model->find($newIdEditorial);
 
     if ($newName == $editorial->Nombre && $newIdCountry == $editorial->id_pais && $newState == $editorial->estado) {
-      session()->setFlashdata("status", "No hubo cambios");
+      session()->setFlashdata("status", "No se realizarón cambios");
       return redirect("editorials")->with("status_icon", "info");
     }
     $string = implode(',', $editorial->toRawArray());

@@ -35,14 +35,18 @@ class EditorialsModel extends Model
     $model = model("auditoriaModel");
     $old = $this->oldInfo;
     if ($data["data"]["estado"] == 0) {
-      array_pop($old);
-      $datos = [
-        "tipo" => "DELETE",
-        "tabla" => "editoriales",
-        "id_user" => config("G3stor")->currentUserId,
-        "old_info" => implode("|", $this->oldInfo),
-        "new_info" => implode("|", $old)  . "|" . "0"
-      ];
+      try {
+        array_pop($old);
+        $datos = [
+          "tipo" => "DELETE",
+          "tabla" => "editoriales",
+          "id_user" => config("G3stor")->currentUserId,
+          "old_info" => implode("|", $this->oldInfo),
+          "new_info" => implode("|", $old)  . "|" . "0"
+        ];
+      } catch (\Throwable $th) {
+        //throw $th;
+      }
     } else {
       $datos = [
         "id_editorial" => null,

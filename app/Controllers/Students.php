@@ -10,7 +10,7 @@ class Students extends BaseController
 {
   public function index()
   {
-    $model = model("VStudentsModel");
+    $model = model("VStudents");
 
     $fields = $model->getFields();
     $q = $this->request->getGet("q");

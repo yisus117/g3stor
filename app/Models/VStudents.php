@@ -6,7 +6,7 @@ use App\Entities\Student;
 use CodeIgniter\Model;
 use Exception;
 
-class VStudentsModel extends Model
+class VStudents extends Model
 {
   protected $table            = 'v_estudiantes';
   protected $primaryKey       = 'id_estudiante';

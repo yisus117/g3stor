@@ -6,8 +6,9 @@
     ruta = location.pathname;
 
     $(".delete").prop("disabled", true);
-    $("a").removeAttr("href");
-
+    $("a").click(function (e) {
+      e.preventDefault();
+    });
 
     swal
       .fire({
@@ -29,6 +30,8 @@
               location.reload();
             },
             error: function () {
+              $(".delete").prop("disabled", false);
+              $("a").off("click");
               swal.fire(
                 "Error!",
                 "Error al tratar de eliminar el registro",
@@ -38,8 +41,8 @@
           });
         } else {
           $(".delete").prop("disabled", false);
+          $("a").off("click");
         }
       });
   });
-  $(".delete").prop("disabled", false);
 })();
