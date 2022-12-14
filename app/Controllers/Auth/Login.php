@@ -47,7 +47,8 @@ class Login extends BaseController
       "id_user" => $this->request->getVar("email"),
       "user_name" => $user->primer_nombre ." ".$user->primer_apellido,
       "is_logged" => true,
-      "user_role" => $user->getRole()->nombre_grupo
+      "user_role" => $user->getRole()->nombre_grupo,
+      "id" => $user->id_usuario
     ]);
 
     session()->setFlashdata("status", "Bienvenido nuevamente");

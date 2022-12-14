@@ -11,13 +11,13 @@ class Dashboard extends BaseController
   {
     $state = 1;
   
-
-
     return view("home/dashboard", [
       "countEditorials" => model("VEditorials")->countEditorials($state),
       "countBooks" =>   model("VAutors")->countAutors($state),
       "countAutors" =>  model("VAutors")->countAutors($state),
       "countStudents" =>   model("VStudents")->countStudents($state),
+      "countLend" =>  model("LendBooksModel")->countLend($state),
+      "countUsers" =>  model("UsersModel")->countUsers($state),
     ]);
   }
 }

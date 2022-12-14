@@ -28,7 +28,20 @@ class LendBooksDetModel extends Model
     //     $this->select('prestamos_det.*');
     //     //$this->join('estudiantes as e', 'e.id_estudiante=prestamos_enc.id_estudiante');
     //     $this->where('prestamos_det.estado', $activo);
-    //     $datoss = $this->findAll();  // nos trae todos los registros que cumplan con una condicion dada 
+    //     $datoss = $this->findAll();  
     //     return $datoss;
     // }
+
+    public function insertDetails($pres, $lib, $cost)
+    {
+      $q = "CALL insertar_prestamos_det($pres, $lib, $cost)";
+      $query = $this->query($q);
+      return $query;
+    }
+
+    public function repayBook($id)
+    {
+      return $this->update("id_prestamo",$id, ["estado" => 2]);
+    }
+  
 }

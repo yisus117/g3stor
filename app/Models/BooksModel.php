@@ -25,60 +25,24 @@ class BooksModel extends Model
 
 
 
-
-  // Events parameters
-  protected $afterInsert = ["afterInsert"];
-  protected $afterUpdate = ["afterUpdated"];
-
   public $oldInfo;
 
 
-  protected function afterInsert($data)
-  {
-    $model = model("auditoriaModel");
-    $datos = [
-      "tipo" => "INSERT",
-      "tabla" => "libros",
-      "id_user" => config("G3stor")->currentUserId,
-      "old_info" => null,
-      "new_info" => strval($data["id"]) . "|" . implode("|", $data["data"]) . "|" . "1"
-    ];
-    $model->insert($datos);
-  }
-
-  protected function afterUpdated($data)
-  {
-
-  
-    $model = model("auditoriaModel");
-    $old = $this->oldInfo;
-    if ($data["data"]["activo"] == 0) {
-      array_pop($old);
-      $datos = [
-        "tipo" => "DELETE",
-        "tabla" => "libros",
-        "id_user" => config("G3stor")->currentUserId,
-        "old_info" => implode("|", $this->oldInfo),
-        "new_info" => implode("|", $old)  . "|" . "0"
-      ];
-    } else {
-      $datos = [
-        "tipo" => "UPDATE",
-        "tabla" => "libros",
-        "id_user" => config("G3stor")->currentUserId,
-        "old_info" => implode("|", $this->oldInfo),
-        "new_info" => strval($data["id"][0]) . "|" . implode("|", $data["data"])
-      ];
-    }
-    $model->insert($datos);
-  }
 
 
-  public function getBooks()
+  public function getBooks($state)
   {
     return $this
       ->select("*")
       ->where("libros.activo !=", 0)
+      ->orderBy("libros.nombre");
+  }
+
+  public function getBooksForLend()
+  {
+    return $this
+      ->select("*")
+      ->where("libros.activo =", 1)
       ->orderBy("libros.nombre");
   }
 
@@ -96,6 +60,11 @@ class BooksModel extends Model
     return $this->update($id, ["activo" => 0]);
   }
 
+  public function borrowBook($id,$state)
+  {
+    return $this->update($id, ["activo" => $state]);
+  }
+
 
   public function countBooks($state = 1)
   {
@@ -103,6 +72,14 @@ class BooksModel extends Model
     $res = $this->query($sql, $state)->getRow();
     $temp =  get_object_vars($res);
     return $temp["contar_libros_activos(1)"];
+  }
+
+  public function getBookByISBN( $search, $state)
+  {
+    return $this
+      ->select("*")
+      ->like("libros.isbn", $search, "both")
+      ->where("libros.activo", $state);
   }
 
     // obtener los nombres de los campos de la tabla

@@ -126,7 +126,7 @@ $routes->group("prestamos", ["namespace" => "App\Controllers\Lend", "filter" => 
     $routes->get("editar/(:any)", "Lend::edit/$1", ["as" => "lend_edit"]);
     $routes->post("actualizar", "Lend::update", ["as" => "lend_update"]);
 
-    $routes->get("eliminar/(:num)", "Lend::delete/$1", ["as" => "lend_delete"]);
+    $routes->get("eliminar/(:num)/(:num)", "Lend::delete/$1/$2", ["as" => "lend_delete"]);
 });
 
 

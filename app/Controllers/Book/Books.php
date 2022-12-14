@@ -21,8 +21,8 @@ class Books extends BaseController
       $data["books"] = $books;
       $data["countBooks"] =  count($books);
     } else {
-      $data["books"] =  $model->getBooks()->paginate(config("G3stor")->regPerPage);
-      $data["countBooks"] = $model->countBooks();
+      $data["books"] =  $model->getBooks(1)->paginate(config("G3stor")->regPerPage);
+      $data["countBooks"] = $model->countBooks(1);
     };
 
     $data["query"] = $q ?? "";
@@ -151,7 +151,7 @@ class Books extends BaseController
       "activo" => $newState,
     ]);
 
-    session()->setFlashdata("status", "Libro actualizada correctamente");
+    session()->setFlashdata("status", "Libro actualizado correctamente");
     return redirect("books")->with("status_icon", "success");
   }
 
@@ -167,9 +167,9 @@ class Books extends BaseController
 
     $model->deleteBook($id);
 
-    return redirect("books")->with("msg", [
-      "type" => "danger",
-      "body" => "La editorial fue eliminada"
-    ]);
+
+
+    session()->setFlashdata("status", "libro borrado correctamente");
+    return redirect("books")->with("status_icon", "success");
   }
 }

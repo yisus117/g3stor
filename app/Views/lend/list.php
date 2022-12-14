@@ -127,6 +127,7 @@ Prestamos
               <th>Estudiante</th>
               <th>Libro</th>
               <th>Fecha del prestamo</th>
+              <th>Fecha de devolución</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
@@ -139,23 +140,24 @@ Prestamos
                 <td><?= $item->primer_nombre ?> <?= $item->segundo_nombre ?> <?= $item->primer_apellido ?> <?= $item->segundo_apellido ?></td>
                 <td><?= $item->libro ?></td>
                 <td><?= $item->fecha_prestamo ?></td>
-                <td><?= $item->estado ?></td>
+                <td><?= $item->fecha_devolucion ?></td>
                 <td>
                   
-                  <span class=" px-2 py-1 fw-bold  <?= $item->estado == "1" ? "bg-success text-white text-nowrap" : ($item->estado === "2" ? "bg-warning text-dark text-nowrap" : "bg-danger") ?>">
-                    <?= $item->estado == "1" ? "estado" : ($item->estado === "2" ? "Inactivo" : "eliminado") ?>
+                <span class=" px-2 py-1 fw-bold  <?= $item->estado == "1" ? "bg-success text-white text-nowrap" : ($item->estado === "2" ? "bg-warning text-dark text-nowrap" : "bg-danger") ?>">
+                  <?= $item->estado == "1" ? "En prestamo" : ($item->estado === "2" ? "Inactivo" : ($item->estado === "3" ? "En prestamo" : "Eliminado")) ?>
                   </span>
                 </td>
                 <td class="">
                   <div class="d-flex f-row gap-2 mx-0 ">
-                    <a href="<?= $item->getSeeMoreLine($item->id_prestamo) ?>" name="more" class="btn btn-secondary text-white update px-2 py-1 h-4 d-flex justify-content-center align-items-center">
+                    <!-- <a href="<?= $item->getSeeMoreLine($item->id_prestamo) ?>" name="more" class="btn btn-secondary text-white update px-2 py-1 h-4 d-flex justify-content-center align-items-center">
                       <i class="fa-solid fa-edit fs-6"></i>
                       ver mas
                       <i class="fa-solid fa-hand-pointer fs-6"></i>
-                    </a>
-                    <!-- <button type="button" data-name="<?= $item->Nombre ?>" class="btn btn-danger delete text-white px-2 py-1">
-                      <i class="fa-solid fa-trash fs-6"></i>
-                    </button> -->
+                    </a> -->
+                  
+                    <button type="button" data-name="<?= $item->libro ?>"   data-id="<?= $item->id_libro ?>" class="btn btn-secondary delete text-white px-2 py-1">
+                      Devolver
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -188,5 +190,58 @@ Prestamos
 
 
 <?= $this->section('js') ?>
-<script src="<?= base_url("/js/alert.js") ?>"></script>
+<script>
+(function () {
+  $(".delete").click(function (e) {
+    e.preventDefault();
+    var id = $(this).parents("tr").find("td:first").text();
+    var name = $(this).attr("data-name");
+    var libro = $(this).attr("data-id");
+    ruta = location.pathname;
+    console.log(id);
+
+    $(".delete").prop("disabled", true);
+    $("a").click(function (e) {
+      e.preventDefault();
+    });
+
+    swal
+      .fire({
+        title: "Devolución?",
+        text: ' devolver el libro "' + name + '" ?',
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar",
+        allowOutsideClick: true,
+      })
+      .then((isConfirmed) => {
+        if (isConfirmed.value) {
+          $.ajax({
+            url: `${ruta}/eliminar/${id}/${libro}`,
+            success: function (response) {
+              location.reload();
+            },
+            error: function () {
+              $(".delete").prop("disabled", false);
+              $("a").off("click");
+              swal.fire(
+                "Error!",
+                "Error al tratar de eliminar el registro",
+                "warning"
+              );
+            },
+          });
+        } else {
+          $(".delete").prop("disabled", false);
+          $("a").off("click");
+        }
+      });
+  });
+})();
+
+
+</script>
 <?= $this->endSection() ?>
