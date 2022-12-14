@@ -7,9 +7,9 @@ Login
 <?= $this->section('content') ?>
 
 <section class="section min-vh-100 d-flex justify-content-center align-items-center text-white">
-  <div class="container d-flex flex-column align-items-center p-4 justify-content-between" style="width: 500px; background-color: <?= Config("G3stor")->mainColor ?> ;" >
+  <div class="container d-flex flex-column align-items-center p-5 justify-content-between" style="width: 500px; background-color: <?= Config("G3stor")->mainColor ?> ;" >
     <h3 class="h2 mb-4">Ingresar</h3>
-    <form action="<?= base_url(route_to("signin")) ?>" method="POST">
+    <form action="<?= base_url(route_to("signin")) ?>" method="POST" class="m-2">
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Correo</label>
         <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -22,10 +22,6 @@ Login
     </form>
 
 
-    <p class="text-muted text-white mt-4">
-      Para regresar al inicio presiona 
-      <a href="<?= base_url(route_to("home")) ?>" class="text-right">aquí.</a>
-    </p>
 
   </div>
 </section>

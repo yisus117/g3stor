@@ -82,6 +82,8 @@ a {
 .content-resume {
   /* background-image: url("/wood.jpg") ; */
   border: 0;
+  position: relative;
+  transition: 0.5s;
 }
 
 .dashboard-item-footer {
@@ -103,6 +105,7 @@ a {
   -webkit-box-shadow: inset 2px -2px 6px -3px rgba(0, 0, 0, 1);
   -moz-box-shadow: inset 2px -2px 6px -3px rgba(0, 0, 0, 1);
   box-shadow: inset 2px -2px 6px -3px rgba(0, 0, 0, 1);
+  transition: 0.3s;
 }
 
 .content-body:hover {
@@ -400,7 +403,7 @@ table.table .avatar {
   border-color: #fff;
 }
 .custom-checkbox input[type="checkbox"]:disabled + label:before,
-input[type="text"]:read-only {
+.form-content input[type="text"]:read-only {
   color: rgb(141, 141, 141) !important;
   cursor: auto;
   box-shadow: none;
@@ -638,4 +641,28 @@ input[type="text"]:read-only {
 
 .valid-feedback {
   color: #2acc80;
+}
+
+.menu_password {
+  display: none; /* Ocultamos el menú por defecto */
+}
+
+/* Mostramos el menú cuando se active el checkbox */
+input[type="checkbox"]:checked ~ .menu_password {
+  display: block;
+}
+
+#menu-toggle {
+  width: 1.2rem;
+  height: 1.2rem;
+  top: 0.5rem;
+}
+
+.show-info input[type="checkbox"]:disabled + label:before,
+.show-info input[type="text"]:read-only { 
+  color: rgb(75, 75, 75) !important;
+  cursor: auto;
+  box-shadow: none;
+  background: rgba(8, 8, 8, 0.932) !important;
+  cursor: not-allowed;
 }

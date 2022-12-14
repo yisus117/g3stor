@@ -54,6 +54,16 @@
       </div>
     <?php endif ?>
 
+    <div class="m-0 me-3 mx-5 d-flex gap-md-2 gap-1 align-items-center  position-absolute text-white text-capitalize p-0" style="top: 17px; right: 15px; z-index: 99;">
+     <p class="m-0 fw-bold"> <i class="fa-solid fa-user me-2  fs-6" style="color: #0ebb60;"></i> <smal class="text-wrap"><?= session()->user_name ?></small></p>
+
+
+      <a class="btn btn-danger p-1 px-2" href="<?= base_url(route_to("signout")) ?>">
+        <i class="fa-solid fa-right-from-bracket "></i>
+      </a>
+
+    </div>
+
 
 
   </nav>
@@ -96,28 +106,28 @@
     $(document).ready(function() {
       <?php if (session()->getFlashdata("status_text")) { ?>
         Swal.fire({
-            icon: '<?= session()->getFlashdata("status_icon") ?>',
-            title: '<?= session()->getFlashdata("status") ?>',
-            text: '<?= session()->getFlashdata("status_text") ?>'
+          icon: '<?= session()->getFlashdata("status_icon") ?>',
+          title: '<?= session()->getFlashdata("status") ?>',
+          text: '<?= session()->getFlashdata("status_text") ?>'
         })
-    
-        <?php } else if(session()->getFlashdata("status")) { ?>
-          const Toast = swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-          })
-  
-          Toast.fire({   
-            title: '<?= session()->getFlashdata("status") ?>',
-            icon: '<?= session()->getFlashdata("status_icon") ?>'
-          })
+
+      <?php } else if (session()->getFlashdata("status")) { ?>
+        const Toast = swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 4000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+
+        Toast.fire({
+          title: '<?= session()->getFlashdata("status") ?>',
+          icon: '<?= session()->getFlashdata("status_icon") ?>'
+        })
 
 
       <?php }  ?>

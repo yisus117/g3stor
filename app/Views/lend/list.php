@@ -27,8 +27,8 @@ Prestamos
 
         <div class="row">
           <div class="col-6  d-flex align-items-center justify-content-between">
-            <a href="<?= base_url(route_to("editorials")) ?>" class="title-hover no_wrap d-inline h3 text-sm-center text-md-start text-white">
-              Editoriales
+            <a href="<?= base_url(route_to("lend")) ?>" class="title-hover no_wrap d-inline h3 text-sm-center text-md-start text-white">
+              Prestamos
               <i class="fa-solid fa-arrows-rotate fs-5 text-secondary"></i>
             </a>
           </div>
@@ -108,7 +108,7 @@ Prestamos
 
       </div>
 
-      <?php if (!$editorials && !$query) : ?>
+      <?php if (!$lend && !$query) : ?>
         <p class="mt-3 display-2 text-center" style="color: <?= config("G3stor")->mainColor ?>;">
           <i class="fa-regular fa-face-frown-open"></i>
         </p>
@@ -125,6 +125,7 @@ Prestamos
             <tr>
               <th>ID</th>
               <th>Estudiante</th>
+              <th>Libro</th>
               <th>Fecha del prestamo</th>
               <th>Estado</th>
               <th>Acciones</th>
@@ -136,18 +137,21 @@ Prestamos
               <tr>
                 <td><?= $item->id_prestamo ?></td>
                 <td><?= $item->primer_nombre ?> <?= $item->segundo_nombre ?> <?= $item->primer_apellido ?> <?= $item->segundo_apellido ?></td>
+                <td><?= $item->libro ?></td>
                 <td><?= $item->fecha_prestamo ?></td>
                 <td><?= $item->estado ?></td>
                 <td>
+                  
                   <span class=" px-2 py-1 fw-bold  <?= $item->estado == "1" ? "bg-success text-white text-nowrap" : ($item->estado === "2" ? "bg-warning text-dark text-nowrap" : "bg-danger") ?>">
                     <?= $item->estado == "1" ? "estado" : ($item->estado === "2" ? "Inactivo" : "eliminado") ?>
                   </span>
                 </td>
                 <td class="">
                   <div class="d-flex f-row gap-2 mx-0 ">
-                    <a href="<?= $item->getEditLine($editorial->id_editorial) ?>" name="more" class="btn btn-secondary text-white update px-2 py-1 h-4 d-flex justify-content-center align-items-center">
+                    <a href="<?= $item->getSeeMoreLine($item->id_prestamo) ?>" name="more" class="btn btn-secondary text-white update px-2 py-1 h-4 d-flex justify-content-center align-items-center">
                       <i class="fa-solid fa-edit fs-6"></i>
                       ver mas
+                      <i class="fa-solid fa-hand-pointer fs-6"></i>
                     </a>
                     <!-- <button type="button" data-name="<?= $item->Nombre ?>" class="btn btn-danger delete text-white px-2 py-1">
                       <i class="fa-solid fa-trash fs-6"></i>

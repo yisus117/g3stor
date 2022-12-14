@@ -135,10 +135,8 @@ class Autors extends BaseController
     $autor = $model->find($idAutor);
 
     if ($firstName == $autor->primer_nombre && $secondName == $autor->segundo_nombre && $firstLastName == $autor->primer_apellido && $secondLastName == $autor->segundo_apellido && $pseudonym == $autor->seudonimo && $address == $autor->direccion && $idCountry == $autor->id_pais && $state == $autor->estado) {
-      return redirect("autors")->with("msg", [
-        "type" => "secondary",
-        "body" => "Sin cambios"
-      ]);
+      session()->setFlashdata("status", "No se realizarón cambios");
+      return redirect("editorials")->with("status_icon", "info");
     }
     $string = implode(',', $autor->toRawArray());
     $autor = explode(',', $string);

@@ -3,7 +3,7 @@
 namespace App\Controllers\Auth;
 
 use App\Controllers\BaseController;
-
+$hash = \Config\Services::hash();
 
 class Login extends BaseController
 {
@@ -35,19 +35,19 @@ class Login extends BaseController
         ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
     }
 
-
-
-    // if(password_verify($password, $user->contrasena)){
-    if (!$password == $user->contrasena) {
+    // if(!password_verify($password, $user->contrasena)){
+    if(!($password === $user->contrasena)){
       session()->setFlashdata("status_text", "La contraseña es incorrecta");
       return redirect()->back()->withInput()->with("status_icon", "error")
         ->with("status", 'Disculpe, revise la informacion ingresada')->with("errors", $this->validator->getErrors());
     }
 
+
     session()->set([
       "id_user" => $this->request->getVar("email"),
-      "username" => $this->request->getVar("email"),
-      "is_logged" => true
+      "user_name" => $user->primer_nombre ." ".$user->primer_apellido,
+      "is_logged" => true,
+      "user_role" => $user->getRole()->nombre_grupo
     ]);
 
     session()->setFlashdata("status", "Bienvenido nuevamente");

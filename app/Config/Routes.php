@@ -45,15 +45,13 @@ $routes->group("/", ["namespace" => "App\Controllers\Home", "filter" => "auth:us
 
 $routes->group("libros", ["namespace" => "App\Controllers\Book", "filter" => "auth:user,admin,master"], function ($routes) {
     $routes->get("", "Books::index", ["as" => "books"]);
+    $routes->get("agregar", "Books::create", ["as" => "books_create"]);
+    $routes->post("agregar/guardar", "Books::store", ["as" => "books_store"]);
 
+    $routes->get("editar/(:any)", "Books::edit/$1", ["as" => "books_edit"]);
+    $routes->post("editar/actualizar", "Books::update", ["as" => "books_update"]);
 
-    $routes->get("agregar", "Books::create", ["as" => "book_create"]);
-    $routes->post("agregar/guardar", "Books::store", ["as" => "book_store"]);
-
-    $routes->get("editar/(:any)", "Books::edit/$1", ["as" => "book_edit"]);
-    $routes->post("editar/actualizar", "Books::update", ["as" => "book_update"]);
-
-    $routes->get("eliminar/(:any)", "Books::delete/$1", ["as" => "book_delete"]);
+    $routes->get("eliminar/(:any)", "Books::delete/$1", ["as" => "books_delete"]);
 
 
     // ----- Autors -----
@@ -81,9 +79,6 @@ $routes->group("libros", ["namespace" => "App\Controllers\Book", "filter" => "au
     $routes->post("editoriales/actualizar", "Editorials::update", ["as" => "editorials_update"]);
 
     $routes->get("editoriales/eliminar/(:num)", "Editorials::delete/$1", ["as" => "editorials_delete"]);
-
-
-
 });
 
 $routes->group("auth", ["namespace" => "App\Controllers\Auth"], function ($routes) {
@@ -94,10 +89,15 @@ $routes->group("auth", ["namespace" => "App\Controllers\Auth"], function ($route
     $routes->get("logout", "Login::signout", ["as" => "signout"]);
 });
 
-$routes->group("auth/registrar", ["namespace" => "App\Controllers\Auth", "filter" => "master"], function ($routes) {
-    $routes->get("", "Register::index", ["as" => "register"]);
-    $routes->post("store", "Register::store");
-   
+$routes->group("usuarios", ["namespace" => "App\Controllers", "filter" => "auth:master"], function ($routes) {
+    $routes->get("", "Users::index", ["as" => "users"]);
+    $routes->get("agregar", "Users::create", ["as" => "users_create"]);
+    $routes->post("agregar/guardar", "Users::store", ["as" => "users_store"]);
+
+    $routes->get("editar/(:any)", "Users::edit/$1", ["as" => "users_edit"]);
+    $routes->post("actualizar", "Users::update", ["as" => "users_update"]);
+
+    $routes->get("eliminar/(:num)", "Users::delete/$1", ["as" => "users_delete"]);
 });
 
 
@@ -118,8 +118,7 @@ $routes->group("estudiantes", ["namespace" => "App\Controllers", "filter" => "au
 
 
 $routes->group("prestamos", ["namespace" => "App\Controllers\Lend", "filter" => "auth:user,admin,master"], function ($routes) {
-    // $routes->get("registro", "Register::index", ["as" => "register"]);
-    // $routes->post("store", "Register::store");
+
     $routes->get("", "Lend::index", ["as" => "lend"]);
     $routes->get("agregar", "Lend::create", ["as" => "lend_create"]);
     $routes->post("agregar/guardar", "Lend::store", ["as" => "lend_store"]);

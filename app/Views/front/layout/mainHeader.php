@@ -54,6 +54,18 @@
           <a class="nav-link <?= preg_match("|^sanciones(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("")) ?>">Sanciones</a>
         </li>
 
+        <?php if(session()->get('user_role') === "master"){ ?>
+          <li class="nav-item">
+          <a class="nav-link <?= preg_match("|^sanciones(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("")) ?>">Usuarios</a>
+        </li>
+        <?php } ?>
+
+        <?php if( session()->get('user_role') === "master" || session()->get('user_role') === "admin"){ ?>
+          <li class="nav-item">
+          <a class="nav-link <?= preg_match("|^sanciones(\S)*$|",  service("request")->uri->getPath(), $matches) ? "active" : "" ?>" href="<?= base_url(route_to("")) ?>">Auditoria</a>
+        </li>
+        <?php } ?>
+
 
       </ul>
     </div>

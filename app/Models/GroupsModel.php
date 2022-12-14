@@ -12,4 +12,11 @@ class GroupsModel extends Model
     protected $useTimestamps    = false;
     protected $returnType       = "object";
 
+
+    public function getGroups($state)
+    {
+        return $this->select("*")
+            ->where("grupos.estado", $state)
+            ->orderBy("grupos.id_grupo", "DESC");
+    }
 }

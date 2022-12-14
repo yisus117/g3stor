@@ -1,7 +1,7 @@
 <?= $this->extend('front/layout/main') ?>
 
 <?= $this->section('title') ?>
-Editar editorial: <?= $editorial->nombre ?>
+Editar prestamo: <?= $editorial->nombre ?>
 <?= $this->endSection() ?>
 
 

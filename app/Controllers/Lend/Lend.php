@@ -38,13 +38,21 @@ class Lend extends BaseController
   }
 
 
+
   public function create()
   {
-    $model = model("CountriesModel");
+    $model = model("VStudents");
+    $data = [];
+    $doc = $this->request->getGet("doc");
 
-    return view('book/autors/autors_create', [
-      "countries" => $model->where("estado", 1)->findAll()
-    ]);
+    
+    if($doc){
+      $student = $model->getStudentsByDoc($doc, 1)->first();
+      $data["student"] = $student;
+      $data["search"] = $doc;
+     }
+
+    return view('lend/create', $data);
   }
 
   public function store()

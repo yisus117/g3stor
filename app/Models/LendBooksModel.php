@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+
 use CodeIgniter\Model;
+use App\Entities\LendBook;
 use Exception;
 
 class LendBooksModel extends Model
@@ -45,9 +47,11 @@ class LendBooksModel extends Model
 
     public function getLend($state)
     {
-        return $this->select('id_prestamo,e.primer_nombre, e.segundo_nombre, e.primer_apellido, e.segundo_apellido')
-        ->join('estudiantes as e', 'e.id_estudiante = prestamos_enc.id_estudiante')
-        ->where('prestamos_enc.estado', $state);
+        return $this->select("prestamos_enc.id_prestamo,fecha_prestamo,e.primer_nombre, e.segundo_nombre, e.primer_apellido, e.segundo_apellido,prestamos_enc.estado, lb.nombre as libro")
+        ->join("estudiantes as e", "e.id_estudiante = prestamos_enc.id_estudiante")
+        ->join("prestamos_det as pd", "pd.id_dprestamo = prestamos_enc.id_prestamo")
+        ->join("libros as lb", "lb.id_libros = pd.id_libro")
+        ->where("prestamos_enc.estado", $state);
 
     }
     public function getLendBy($state)

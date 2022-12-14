@@ -46,6 +46,14 @@ class VStudents extends Model
       ->orderBy("v_estudiantes.id_estudiante", "DESC");
   }
 
+  public function getStudentsByDoc( $search, $state)
+  {
+    return $this
+      ->select("*")
+      ->like("v_estudiantes.documento", $search, "both")
+      ->where("v_estudiantes.activo", $state);
+  }
+
   
   public function getFields()
   {

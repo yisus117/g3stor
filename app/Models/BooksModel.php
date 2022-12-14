@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Entities\Book;
 use CodeIgniter\Model;
+use Exception;
 
 class BooksModel extends Model
 {
@@ -73,23 +74,21 @@ class BooksModel extends Model
   }
 
 
-  public function getBooks($state)
+  public function getBooks()
   {
     return $this
-      ->select("id_libros, libros.nombre, e.nombre AS editorial, libros.edicion, libros.paginas, libros.activo")
-      ->join("editoriales as e", "e.id_editorial = libros.id_editorial")
-      ->where("libros.activo", $state)
+      ->select("*")
+      ->where("libros.activo !=", 0)
       ->orderBy("libros.nombre");
   }
 
-  public function getBooksByName($name, $state = 1)
+  public function getBooksBy($field, $search)
   {
     return $this
-      ->select("id_libros, libros.nombre, e.nombre AS editorial, libros.edicion, libros.paginas, libros.activo")
-      ->join("editoriales as e", "e.id_editorial = libros.id_editorial")
-      ->like("libros.nombre", $name, "after")
-      ->where("libros.activo", $state)
-      ->orderBy("libros.nombre");
+      ->select("*")
+      ->like("libros.$field", $search, "after")
+      ->where("libros.activo !=", 0)
+      ->orderBy("libros.id_libros", "DESC");
   }
 
   public function deleteBook($id)
@@ -102,6 +101,34 @@ class BooksModel extends Model
   {
     $sql = 'SELECT contar_libros_activos(?)';
     $res = $this->query($sql, $state)->getRow();
-    return get_object_vars($res);
+    $temp =  get_object_vars($res);
+    return $temp["contar_libros_activos(1)"];
   }
+
+    // obtener los nombres de los campos de la tabla
+    public function getFields()
+    {
+      try {
+        $q = "CALL obtener_nombre_campos('libros')";
+        $query = $this->query($q)->getResult();
+        array_shift($query);
+      } catch (Exception $e) {
+        echo $e;
+      }
+  
+      return array_filter(
+        array_column($query, "COLUMN_NAME"),
+        function ($a) {
+          return (!strpos($a, "contrasena"));
+        }
+      );
+    }
+
+    public function insertBook($isbn,$nom,$edi,$edition,$pages,$cost)
+    {
+      $q = "CALL insertar_libro('$isbn','$nom',$edi,'$edition',$pages,$cost)";
+      $query = $this->query($q);
+      return $query;
+    }
+  
 }

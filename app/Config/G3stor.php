@@ -14,7 +14,7 @@ class G3stor extends BaseConfig{
   public $mainColor   = "#283556";
   public $secondColor = "#435d7d";
   public $bodyColor   = "#1e1e1e";
-  public $textColor   = "#22252A";
+  public $textColor   = "#303235";
   public $grayColor   = "#d1d1d1";
 
 

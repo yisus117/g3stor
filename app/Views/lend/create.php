@@ -1,7 +1,7 @@
 <?= $this->extend('front/layout/main') ?>
 
 <?= $this->section('title') ?>
-Agregar una editorial
+Realizar un prestamo
 <?= $this->endSection() ?>
 
 
@@ -11,9 +11,8 @@ Agregar una editorial
 <nav class="mt-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item  text-info"><a href="<?= base_url(route_to("home")) ?>">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="<?= base_url(route_to("books")) ?>">Libros</a></li>
-    <li class="breadcrumb-item"><a href="<?= base_url(route_to("editorials")) ?>">Editoriales</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Agregar</li>
+    <li class="breadcrumb-item"><a href="<?= base_url(route_to("lend")) ?>">Prestamos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Realizar</li>
   </ol>
 </nav>
 <?= $this->endSection() ?>
@@ -27,32 +26,44 @@ Agregar una editorial
         <div class="form-holder">
           <div class="form-content container">
             <div class="form-items" style="background-color: <?= config("G3stor")->mainColor ?>;">
-              <h3 class="mb-4 fw-normal">Agregar una editorial</h3>
+              <h3 class="mb-4 fw-normal">Realizar un prestamo</h3>
 
-              <form class="requires-validation" novalidate action="<?= base_url(route_to("editorials_store")) ?>" method="POST">
 
-              <div class="row">
 
+              <div class="row bg-success p-2">
                 <div class="col-md-6 mb-4">
-                  <label class="label fs-6">Nombre:</label>
-                  <input class="form-control mt-1 " type="text" name="name" placeholder="Ingrese el nombre" required style="background-color: <?= config("G3stor")->secondColor ?>;">
-                  <div class="valid-feedback">valido</div>
-                  <div class="invalid-feedback">El campo de nombre no puede estar en blanco</div>
+                <form  method="GET">
+                    <label class="label fs-6">Documento del estudiante:</label>
+                    <input class="form-control mt-1" value="<?= $search ?? '' ?>" type="text" name="doc" placeholder="Ingrese el documento" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+                    <div class="valid-feedback">valido</div>
+                    <div class="invalid-feedback">El campo de nombre no puede estar en blanco</div>
+                    <div class=" mt-3 d-flex justify-content-center">
+                      <button class="btn m-2 px-4" style="color: white; background-color: <?= config("G3stor")->secondColor ?>">buscar</button>
+                    </form>
+                  </div>
+                  </div>
+                <div class="col-md-6 mb-4 show-info">
+                  <?php if(isset($student)): ?>
+                    <input readonly class="form-control mt-1 " value="Nombre: <?= $student->primer_nombre ?> <?= $student->segundo_nombre ?>" type="text" name="doc" placeholder="Ingrese el documento" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+
+                    <input readonly class="form-control mt-1 " value="<?= $student->primer_apellido ?> <?= $student->segundo_apellido ?>" type="text" name="doc" placeholder="Ingrese el documento" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+
+                    <input readonly class="form-control mt-1 " value="<?= $student->correo ?>" type="text" name="doc" placeholder="Ingrese el documento" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+
+                    <input readonly class="form-control mt-1 " value="<?= $student->programa ?>" type="text" name="doc" placeholder="Ingrese el documento" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+
+                    <input readonly class="form-control mt-1 " value="<?= $student->activo ?>" type="text" name="doc" placeholder="Ingrese el documento" required style="background-color: <?= config("G3stor")->secondColor ?>;">
+
+                    <?php elseif($search && !$student ): ?>
+                      <h4>Sin resultados</h4>
+                    <?php endif ?>
+               
                 </div>
 
-                <div class="col-md-6 mb-4 ">
-                  <label class="label fs-6">Pais:</label>
-                  <select name="id_country" class="form-select mt-1" required style="background-color: <?= config("G3stor")->secondColor ?>;">
-                    <option selected disabled hidden value="">Selecciona un pais</option>
-                    <?php foreach ($countries as $country) : ?>
-                      <option value="<?= old("id_country") ?? $country->id_pais ?>" <?php if ($country->id_pais == old("id_country")) : ?> selected <?php endif ?>><?= $country->nombre ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                  <div class="valid-feedback"></div>
-                  <div class="invalid-feedback">Por favor selecciona un pais</div>
-                </div>
 
-                </div>
+
+              </div>
+              <form class="requires-validation" novalidate action="<?= base_url(route_to("lend_create")) ?>" method="POST">
 
                 <div class="col-md-12 mb-4 d-none">
                   <label class="label fs-6">Estado:</label>
@@ -79,11 +90,8 @@ Agregar una editorial
         </div>
       </div>
     </div>
-    
+
   </div>
 
 </section>
 <?= $this->endSection() ?>
-
-
-
